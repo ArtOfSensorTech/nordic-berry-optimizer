@@ -1,12 +1,12 @@
 # Nordic Berry Optimizer — v1.0 Mathematical Specification
 
-Status: **LOCKED v1.0-rev4**. No further mathematical changes permitted
+Status: **LOCKED v1.0-rev5**. No further mathematical changes permitted
 before implementation. This document is the ground truth for the Codex
 build task. Do not modify nutrient data or core formulas without
 updating this file and re-running the frozen evaluation set.
 
 **Revision note (pre-implementation, still before any code was written):**
-this is v1.0-rev4. Fixes vs. rev1 (first draft): normalized the
+this is v1.0-rev5. Fixes vs. rev1 (first draft): normalized the
 slider→target formula to prevent unbounded overflow with multiple high
 sliders (§5); made caffeine a separate objective with its own target/range
 so Stimulant Boost actually does something measurable (§6, §7); made
@@ -23,27 +23,38 @@ a fixed zero target made mineral_water strictly worse for NNTD in every
 case, defeating the entire electrolyte-tradeoff rationale for introducing
 it (§5); Na excluded from the unreachable-dimension report since its
 target is a consequence of `liquid_base`, not a user goal (§8).
-**Fixes vs. rev3 (found by Codex's read-only TASK 1 review, refined by
-a second review pass):** §7 still referenced the old "fixed-zero Na
-target" wording after the rev3 fix — corrected to point at §5's
-liquid_base-dependent target; the recipe-level antioxidant aggregation
-formula was entirely missing from rev3 (only per-berry scores were
-defined) — added as a mass-weighted average over berries used, with a
+**Fixes vs. rev3 (found by Codex's first read-only TASK 1 review):** §7
+still referenced the old "fixed-zero Na target" wording after the rev3
+fix — corrected to point at §5's liquid_base-dependent target; the
+recipe-level antioxidant aggregation formula was entirely missing from
+rev3 — added as a mass-weighted average over berries used, with a
 zero-berry edge case (§2); §7 now explicitly forbids treating guarana as
-a variable fixed before a separate berry optimization, since guarana
-displaces mass that could otherwise be mineral_water carrying K/Ca/Mg/Na
-— berries and guarana must be optimized jointly; the stimulant objective
-was restructured from a loose "secondary objective" into an explicit
-lexicographic order — `50 ≤ caffeine ≤ 200` is now a hard feasibility
-constraint (not a soft goal), with `|caffeine - 100|` minimized only as
-a tie-break among feasible, near-equal-NNTD candidates — this closes a
-real gap where the optimizer could previously have satisfied "Stimulant
-Boost ON" with zero guarana. This full revision history (rev1 → rev4,
-including the read-only agent review step) is itself strong material for
-the Improvement Changelog deliverable — it demonstrates disciplined
-iteration on the specification *before* code existed, driven by
-structured review from multiple angles rather than trial and error
-against the eval set.
+a variable fixed before a separate berry optimization — berries and
+guarana must be optimized jointly; the stimulant objective was
+restructured into an explicit lexicographic order — `50 ≤ caffeine ≤ 200`
+is a hard feasibility constraint, with `|caffeine - 100|` minimized only
+as a tie-break.
+**Fixes vs. rev4 (found by Codex's second read-only review of the rev4
+text):** (1) caffeine below 50 mg was ambiguous between "verifier fixes
+it" and "verifier flags it" — resolved by making the verifier a pure
+classifier that never modifies a recipe: `<50mg` → WARN +
+`invalid_for_boost` flag, `>200mg` → REJECT as an optimizer bug, never a
+"reduce and recompute" (§8.4); (2) the "near-equal NNTD" tie-break had no
+defined tolerance — fixed at `≤ 1e-9` for a fully deterministic outcome
+(§7); (3) Stimulant Boost's slider eligibility (originally "Data Expert,
+Fit only") directly contradicted frozen eval case §11.10, which tests
+Genius + Stimulant Boost — expanded eligibility to include Genius rather
+than alter a frozen case (§6); (4) liquid `< 40g` had the same
+verifier-tries-to-fix-it problem as the caffeine case — resolved
+identically: this must hold by construction via the optimizer's own
+constraint (§7), and the verifier only checks and rejects on violation,
+treating it as an internal error rather than something to repair (§3,
+§8.3). This full revision history (rev1 → rev5, including two
+independent read-only agent review passes before any implementation)
+is itself strong material for the Improvement Changelog deliverable —
+it demonstrates disciplined, structured iteration on the specification
+driven by review from multiple angles, not trial and error against the
+eval set.
 
 ## 1. Purpose statement (no health claims)
 
@@ -105,10 +116,10 @@ given the 6 berry-driven target dimensions, but must be handled),
 - Berry mass per ingredient: bounded **0–80 g** per serving (realistic
   handful-scale amounts).
 - Liquid is the balancing term: `liquid_g = 250 - Σ(berry_g) - guarana_g`.
-  Must be **≥ 40 g**. If the constraint would push liquid below 40 g
-  (e.g. berries maxed out plus a large guarana dose), the optimizer must
-  reduce berry and/or guarana amounts until liquid_g ≥ 40 g — this is
-  checked in Verification §8.
+  Must be **≥ 40 g**. This is a **hard constraint the optimizer enforces
+  during search** (§7) — it must never propose a candidate violating it.
+  Verification (§8) only checks that the constraint holds in the final
+  output; it does not attempt to repair a violation.
 
 ## 4. Target vector dimensions (7)
 
@@ -174,7 +185,9 @@ full mineral_water liquid volume actually contributes.
   will simply reflect how close it got. No-op with a warning if Fit < 50
   (Power Mode without a Fit emphasis is not a meaningful combination).
 
-- **Stimulant Boost** (Data Expert, Fit only — see reject rule below):
+- **Stimulant Boost** (Data Expert, Fit, **and Genius** — see reject rule
+  below; expanded from the rev4 wording to match frozen eval case #11.10,
+  which already tests Genius + Stimulant Boost and must remain valid):
   when ON, `50 ≤ caffeine ≤ 200 mg` is a **hard feasibility constraint**
   on the optimizer (§7) — not an optional secondary objective, and not
   something the optimizer can satisfy with zero guarana. Within feasible
@@ -222,8 +235,12 @@ is not equivalent to the joint problem and must not be used.
    prevents the optimizer from ever "satisfying" Stimulant Boost with
    zero guarana.
 2. Among feasible candidates, minimize NNTD (as above).
-3. Tie-break: among near-equal-NNTD feasible candidates, minimize
-   `|caffeine - 100|` (pull toward the 100 mg target from §6).
+3. Tie-break: two candidates are considered **near-equal** if
+   `|NNTD_a - NNTD_b| ≤ 1e-9` (a tight, essentially-exact-tie threshold —
+   appropriate since the deterministic search in §7 is expected to
+   produce exact or near-exact ties between discrete candidates, not
+   near-misses that should be conflated). Among near-equal candidates,
+   minimize `|caffeine - 100|` (pull toward the 100 mg target from §6).
 
 Exact algorithm choice (constrained least-squares, heuristic search, a
 small custom deterministic solver, etc.) is Codex's implementation task —
@@ -245,12 +262,25 @@ priority over dependency minimalism.
 2. Mass balance: `Σ(berry_g) + guarana_g + liquid_g == 250` (§3) →
    else REJECT (internal error, should be impossible if optimizer respects
    constraints).
-3. Liquid ≥ 40 g → else REDUCE berry/guarana amounts and recompute
-   (§3); if still unreachable, REJECT as unreachable target.
-4. Caffeine: if Stimulant Boost ON, achieved caffeine must be in
-   `[50, 200] mg`. Above 200 → hard REDUCE guarana and recompute
-   (safety ceiling, non-negotiable). Below 50 → WARN
-   ("stimulant boost requested but negligible caffeine achieved").
+3. Liquid ≥ 40 g → this must already hold by construction, since the
+   optimizer (§7) treats it as a hard constraint during search, never as
+   something to fix afterward. If verification ever observes
+   `liquid_g < 40`, this indicates the optimizer violated its own
+   constraints — **REJECT as an internal error** (same category as a
+   mass-balance failure in step 2), not something the verifier attempts
+   to repair. The verifier classifies; it does not re-optimize.
+4. Caffeine (only meaningful when Stimulant Boost is ON): the verifier
+   classifies, it does not adjust guarana or recompute anything.
+   - `50 ≤ caffeine ≤ 200 mg` → PASS.
+   - `caffeine > 200 mg` → **REJECT — hard safety violation.** This
+     should be impossible if the optimizer respects the §7 feasibility
+     constraint; if it happens, it is an optimizer bug, not something
+     verification silently corrects.
+   - `caffeine < 50 mg` → **WARN**, not a reject: the overall recipe may
+     still be nutritionally valid, but it is flagged as
+     `invalid_for_boost = true` in the report, meaning it does not count
+     as having satisfied the Stimulant Boost requirement for evaluation
+     purposes (§9, §11).
 5. Cute + Stimulant Boost (`Cute ≥ 80`) → REJECT with explicit reason
    (redundant with step 0, kept here as a final guard).
 6. Cute ≥ 80 + mineral_water → WARN, do not block.
@@ -271,15 +301,17 @@ slider-driven — so `deviation_Na` reflects both "no unwanted sodium" and
 "mineral_water's electrolyte target roughly met," not a pure penalty.
 
 Caffeine is **not** included in NNTD (§6, §7) — reported separately as
-`caffeine_achieved_mg` and `caffeine_in_range` (bool), only when Stimulant
-Boost is applicable.
+`caffeine_achieved_mg`, `caffeine_in_range` (bool, PASS per §8.4), and
+`invalid_for_boost` (bool, set by the `< 50 mg` WARN case in §8.4), only
+when Stimulant Boost is applicable.
 
 **Report per-dimension deviation, not just the aggregate NNTD**, for both
 baseline and agent, across all frozen cases (§11) — this makes the
 before/after evidence far more concrete than a single number.
 
-Secondary reported metrics: valid recipes / total, safety violations,
-Cute+Stimulant violations correctly rejected, unreachable targets flagged.
+Secondary reported metrics: valid recipes / total, safety violations
+(§8.4 REJECT), invalid-for-boost count (§8.4 WARN), Cute+Stimulant
+violations correctly rejected, unreachable targets flagged.
 
 ## 10. Baseline definition (frozen prompt)
 

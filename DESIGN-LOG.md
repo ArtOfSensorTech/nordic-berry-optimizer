@@ -50,6 +50,19 @@ corrected:
 5. Further consistency checks addressed mass balance, sodium
    normalization, stimulant boundaries and zero-slider input.
 
+### Iteration 5 — Codex specification review
+
+A read-only Codex review of v1.0-rev4 identified four remaining
+specification ambiguities:
+
+1. stimulant verification behavior below the minimum caffeine threshold
+2. undefined tolerance for the "near-equal NNTD" tie-break
+3. inconsistency between Stimulant Boost availability and frozen case #10
+4. unspecified verifier behavior when liquid mass falls below the minimum
+
+These were resolved before implementation to preserve deterministic
+evaluation and a clean separation between optimization and verification.
+
 ### Design principle
 
 The final architecture separates:
