@@ -22,6 +22,10 @@ OPENROUTER_BASELINE_MODEL = "z-ai/glm-5.2:free"
 # 512 output tokens is ample for exact ingredient grams. The model/API may not
 # guarantee bitwise deterministic output, so results retain raw baseline text.
 GENERATION_SETTINGS = {"temperature": 0, "top_p": 1, "max_tokens": 512, "stream": False}
+_SAFE_HTTP_ERROR_HEADERS = {
+    "retry-after", "request-id", "x-request-id", "ratelimit-limit", "ratelimit-remaining",
+    "ratelimit-reset", "x-ratelimit-limit", "x-ratelimit-remaining", "x-ratelimit-reset",
+}
 
 
 class OpenRouterConfigurationError(RuntimeError):
@@ -30,6 +34,33 @@ class OpenRouterConfigurationError(RuntimeError):
 
 class OpenRouterResponseError(RuntimeError):
     """Raised for an unusable OpenRouter response without exposing credentials."""
+
+
+def _redact_secret(value: object, secret: str) -> str:
+    text = str(value)
+    return text.replace(secret, "<redacted>") if secret else text
+
+
+def _http_error_details(exc: HTTPError, api_key: str) -> str:
+    details = [f"HTTP {exc.code}"]
+    try:
+        body = json.loads(exc.read().decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        body = None
+    if isinstance(body, dict) and isinstance(body.get("error"), dict):
+        error = body["error"]
+        if "message" in error:
+            details.append(f"message={_redact_secret(error['message'], api_key)}")
+        if "code" in error:
+            details.append(f"code={_redact_secret(error['code'], api_key)}")
+    safe_headers = {
+        name: _redact_secret(value, api_key)
+        for name, value in exc.headers.items()
+        if name.lower() in _SAFE_HTTP_ERROR_HEADERS
+    }
+    if safe_headers:
+        details.append(f"headers={json.dumps(safe_headers, sort_keys=True)}")
+    return "OpenRouter request failed with " + "; ".join(details)
 
 
 def make_openrouter_baseline_callable(
@@ -63,7 +94,7 @@ def make_openrouter_baseline_callable(
             with opener(request, timeout=60) as response:
                 response_payload = json.loads(response.read().decode("utf-8"))
         except HTTPError as exc:
-            raise OpenRouterResponseError(f"OpenRouter request failed with HTTP {exc.code}") from exc
+            raise OpenRouterResponseError(_http_error_details(exc, api_key)) from exc
         except URLError as exc:
             raise OpenRouterResponseError("OpenRouter request could not be completed") from exc
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:

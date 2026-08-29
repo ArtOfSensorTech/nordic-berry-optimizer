@@ -1,12 +1,14 @@
 import json
+from io import BytesIO
 import os
 import unittest
+from urllib.error import HTTPError
 from unittest.mock import patch
 
 from src.baseline import FROZEN_PROMPT
 from src.openrouter_baseline import (GENERATION_SETTINGS, OPENROUTER_API_KEY_ENV,
                                      OPENROUTER_BASELINE_MODEL, OPENROUTER_BASELINE_PROVIDER,
-                                     OpenRouterConfigurationError,
+                                     OpenRouterConfigurationError, OpenRouterResponseError,
                                      make_openrouter_baseline_callable)
 
 
@@ -54,6 +56,39 @@ class OpenRouterAdapterTests(unittest.TestCase):
         for name, value in GENERATION_SETTINGS.items():
             self.assertEqual(payload[name], value)
         self.assertNotIn("test-key", repr(payload))
+
+    def test_http_429_retains_safe_diagnostics_without_retry_or_credentials(self):
+        calls = []
+
+        def opener(request, timeout):
+            calls.append((request, timeout))
+            raise HTTPError(
+                request.full_url,
+                429,
+                "Too Many Requests",
+                {
+                    "Retry-After": "30",
+                    "X-RateLimit-Remaining": "0",
+                    "X-Request-ID": "request-123",
+                    "Authorization": "Bearer test-key",
+                    "Set-Cookie": "secret-cookie",
+                },
+                BytesIO(json.dumps({"error": {"message": "quota exceeded for test-key", "code": 429}}).encode()),
+            )
+
+        with patch.dict(os.environ, {OPENROUTER_API_KEY_ENV: "test-key"}, clear=True):
+            with self.assertRaises(OpenRouterResponseError) as raised:
+                make_openrouter_baseline_callable(opener=opener)("smoke prompt")
+
+        message = str(raised.exception)
+        self.assertIn("HTTP 429", message)
+        self.assertIn("quota exceeded", message)
+        self.assertIn('"Retry-After": "30"', message)
+        self.assertIn('"X-Request-ID": "request-123"', message)
+        self.assertNotIn("test-key", message)
+        self.assertNotIn("Authorization", message)
+        self.assertNotIn("secret-cookie", message)
+        self.assertEqual(len(calls), 1)
 
 
 if __name__ == "__main__":
