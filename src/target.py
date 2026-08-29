@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import math
+
 DIMENSION_SCALES = {
     "vitc_mg": 150.0, "k_mg": 350.0, "mg_mg": 35.0, "ca_mg": 60.0,
     "na_mg": 100.0, "sugar_g": 25.0, "antioxidant_score": 1.0,
@@ -20,7 +22,12 @@ class InputValidationError(ValueError):
 
 
 def validate_inputs(sliders: dict[str, float], stimulant_boost: bool = False) -> None:
-    values = {name: float(sliders.get(name, 0.0)) for name in SLIDERS}
+    try:
+        values = {name: float(sliders.get(name, 0.0)) for name in SLIDERS}
+    except (TypeError, ValueError) as exc:
+        raise InputValidationError("slider values must be finite numeric values") from exc
+    if not all(math.isfinite(value) for value in values.values()):
+        raise InputValidationError("slider values must be finite numeric values")
     if any(value < 0 for value in values.values()):
         raise InputValidationError("slider values must be non-negative")
     if sum(values.values()) == 0:
@@ -35,8 +42,9 @@ def build_target(sliders: dict[str, float], *, power_mode: bool = False,
     validate_inputs(sliders, stimulant_boost)
     if liquid_base not in ("water", "mineral_water"):
         raise InputValidationError("liquid_base must be water or mineral_water")
-    total = sum(float(sliders.get(name, 0.0)) for name in SLIDERS)
-    normalized = {name: float(sliders.get(name, 0.0)) / total for name in SLIDERS}
+    values = {name: float(sliders.get(name, 0.0)) for name in SLIDERS}
+    total = sum(values.values())
+    normalized = {name: values[name] / total for name in SLIDERS}
     target = {dimension: DIMENSION_SCALES[dimension] * sum(
         normalized[name] * WEIGHTS[name][dimension] for name in SLIDERS)
         for dimension in ("vitc_mg", "k_mg", "mg_mg", "ca_mg", "sugar_g", "antioxidant_score")}

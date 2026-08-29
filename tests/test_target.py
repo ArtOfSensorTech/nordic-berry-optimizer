@@ -29,6 +29,11 @@ class TargetTests(unittest.TestCase):
         self.assertEqual(build_target(sliders, liquid_base="water")[0]["na_mg"], 0)
         self.assertEqual(build_target(sliders, liquid_base="mineral_water")[0]["na_mg"], 25)
 
+    def test_non_finite_sliders_rejected(self):
+        for value in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(value=value), self.assertRaisesRegex(InputValidationError, "finite numeric"):
+                build_target({"data": value, "genius": 0, "fit": 0, "cute": 0})
+
 
 if __name__ == "__main__":
     unittest.main()

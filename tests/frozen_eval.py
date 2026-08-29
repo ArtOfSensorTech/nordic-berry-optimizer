@@ -5,9 +5,7 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
-from typing import Callable
-
-from src.baseline import baseline_prompt, parse_baseline_recipe
+from src.baseline import BaselineLLMCallable, baseline_prompt, parse_baseline_recipe, validate_llm_configuration
 from src.metrics import DIMENSIONS
 from src.optimizer import optimize
 from src.verify import verify_recipe
@@ -45,13 +43,31 @@ def run_agent_cases() -> list[dict[str, object]]:
     return results
 
 
-def run_baseline_cases(llm_call: Callable[[str], str]) -> list[dict[str, object]]:
-    """Run the frozen prompt exactly once per case; caller supplies the same LLM."""
+def run_baseline_cases(llm_call: BaselineLLMCallable, *, provider: str, model: str) -> list[dict[str, object]]:
+    """Run the exact frozen prompt once per case with an explicitly identified LLM.
+
+    The evaluation operator supplies the provider-agnostic callable and records
+    its provider/model. No provider, model, or credentials are selected here.
+    """
+    validate_llm_configuration(provider, model)
     results = []
     for case in FROZEN_CASES:
-        text = llm_call(baseline_prompt(case))
-        recipe = parse_baseline_recipe(text)
-        results.append({"case": case, "baseline_text": text, "recipe": recipe, "verification": _verify(recipe, case)})
+        try:
+            text = llm_call(baseline_prompt(case))
+        except Exception as exc:  # Report a provider failure; never manufacture a recipe.
+            results.append({"case": case, "provider": provider, "model": model, "baseline_text": None,
+                            "recipe": None, "verification": {"status": "REJECT", "errors": [f"baseline LLM call failed: {exc}"]}})
+            continue
+        parsed = parse_baseline_recipe(text)
+        if parsed.status != "PASS":
+            results.append({"case": case, "provider": provider, "model": model, "baseline_text": text,
+                            "recipe": parsed.recipe, "liquid_base": None,
+                            "verification": {"status": "REJECT", "errors": [parsed.reason]}})
+            continue
+        verification = verify_recipe(parsed.recipe, case["sliders"], power_mode=bool(case.get("power_mode", False)),
+                                     stimulant_boost=bool(case.get("stimulant_boost", False)), liquid_base=parsed.liquid_base)
+        results.append({"case": case, "provider": provider, "model": model, "baseline_text": text,
+                        "recipe": parsed.recipe, "liquid_base": parsed.liquid_base, "verification": verification})
     return results
 
 

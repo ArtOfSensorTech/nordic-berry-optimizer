@@ -1,5 +1,6 @@
 import unittest
 
+from src.optimizer import optimize
 from src.verify import verify_recipe
 
 
@@ -56,6 +57,18 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(verify_recipe(recipe(blueberry=-1, liquid_g=251), SLIDERS)["status"], "REJECT")
         self.assertEqual(verify_recipe(recipe(blueberry=81, liquid_g=169), SLIDERS)["status"], "REJECT")
         self.assertEqual(verify_recipe(recipe(guarana_g=4.21, liquid_g=205.79), SLIDERS)["status"], "REJECT")
+
+    def test_non_finite_ingredient_amounts_rejected(self):
+        for value in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(value=value):
+                self.assertEqual(verify_recipe(recipe(blueberry=value), SLIDERS)["status"], "REJECT")
+
+    def test_verifier_recomputes_not_optimizer_reported_totals(self):
+        sliders = {"data": 55, "genius": 0, "fit": 45, "cute": 0}
+        optimized = optimize(sliders)
+        optimized["totals"]["vitc_mg"] = -99999.0
+        result = verify_recipe(optimized["recipe"], sliders)
+        self.assertNotEqual(result["totals"]["vitc_mg"], optimized["totals"]["vitc_mg"])
 
     def test_cute_79_boundary_allowed(self):
         result = verify_recipe(recipe(guarana_g=2.0, liquid_g=208), {"data": 21, "genius": 0, "fit": 0, "cute": 79}, stimulant_boost=True)

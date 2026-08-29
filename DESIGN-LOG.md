@@ -63,6 +63,24 @@ specification ambiguities:
 These were resolved before implementation to preserve deterministic
 evaluation and a clean separation between optimization and verification.
 
+### Iteration 6 — TASK 2.1 implementation audit corrective pass
+
+A read-only audit of the initial implementation found four risks before frozen
+evaluation:
+
+1. non-finite slider and ingredient values could evade ordinary comparisons;
+2. verification recomputed totals but shared the optimizer's accounting path;
+3. baseline parsing discarded whether the LLM chose water or mineral water;
+4. baseline evaluation required a concrete, explicitly identified LLM adapter
+   but the repository did not yet describe that configuration boundary.
+
+The corrective pass added finite-number rejection, a JSON-backed verifier
+calculation path separate from optimizer accounting, explicit baseline parse
+statuses with preserved liquid base, malformed-output reporting, and an
+injected provider-agnostic LLM callable requiring provider/model labels. It
+also expanded the Rule Book documentation. No TASK 3 frozen evaluation result
+was generated or used during this pass.
+
 ### Design principle
 
 The final architecture separates:
