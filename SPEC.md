@@ -1,12 +1,12 @@
 # Nordic Berry Optimizer — v1.0 Mathematical Specification
 
-Status: **LOCKED v1.0-rev3**. No further mathematical changes permitted
+Status: **LOCKED v1.0-rev4**. No further mathematical changes permitted
 before implementation. This document is the ground truth for the Codex
 build task. Do not modify nutrient data or core formulas without
 updating this file and re-running the frozen evaluation set.
 
 **Revision note (pre-implementation, still before any code was written):**
-this is v1.0-rev3. Fixes vs. rev1 (first draft): normalized the
+this is v1.0-rev4. Fixes vs. rev1 (first draft): normalized the
 slider→target formula to prevent unbounded overflow with multiple high
 sliders (§5); made caffeine a separate objective with its own target/range
 so Stimulant Boost actually does something measurable (§6, §7); made
@@ -17,15 +17,33 @@ unweighted mean, removing an unjustifiable coefficient (§2); fixed the
 mass balance to include guarana grams (§3); added an explicit
 all-zero-slider validation step (§5, §8); raised the Cute/Stimulant
 reject threshold from 100 to ≥80 with a boundary test (§6, §11).
-Fixes vs. rev2 (this revision): `target[Na]` changed from a fixed 0 mg
-to a `liquid_base`-dependent value (0 mg water / 25 mg mineral_water),
-because a fixed zero target made mineral_water strictly worse for NNTD
-in every case, defeating the entire electrolyte-tradeoff rationale for
-introducing it (§5); Na excluded from the unreachable-dimension report
-since its target is a consequence of `liquid_base`, not a user goal (§8).
-This revision history is itself useful material for the Improvement
-Changelog deliverable — it shows iteration on the spec *before* code
-existed, driven by review, not by trial and error against the eval set.
+Fixes vs. rev2: `target[Na]` changed from a fixed 0 mg to a
+`liquid_base`-dependent value (0 mg water / 25 mg mineral_water), because
+a fixed zero target made mineral_water strictly worse for NNTD in every
+case, defeating the entire electrolyte-tradeoff rationale for introducing
+it (§5); Na excluded from the unreachable-dimension report since its
+target is a consequence of `liquid_base`, not a user goal (§8).
+**Fixes vs. rev3 (found by Codex's read-only TASK 1 review, refined by
+a second review pass):** §7 still referenced the old "fixed-zero Na
+target" wording after the rev3 fix — corrected to point at §5's
+liquid_base-dependent target; the recipe-level antioxidant aggregation
+formula was entirely missing from rev3 (only per-berry scores were
+defined) — added as a mass-weighted average over berries used, with a
+zero-berry edge case (§2); §7 now explicitly forbids treating guarana as
+a variable fixed before a separate berry optimization, since guarana
+displaces mass that could otherwise be mineral_water carrying K/Ca/Mg/Na
+— berries and guarana must be optimized jointly; the stimulant objective
+was restructured from a loose "secondary objective" into an explicit
+lexicographic order — `50 ≤ caffeine ≤ 200` is now a hard feasibility
+constraint (not a soft goal), with `|caffeine - 100|` minimized only as
+a tie-break among feasible, near-equal-NNTD candidates — this closes a
+real gap where the optimizer could previously have satisfied "Stimulant
+Boost ON" with zero guarana. This full revision history (rev1 → rev4,
+including the read-only agent review step) is itself strong material for
+the Improvement Changelog deliverable — it demonstrates disciplined
+iteration on the specification *before* code existed, driven by
+structured review from multiple angles rather than trial and error
+against the eval set.
 
 ## 1. Purpose statement (no health claims)
 
@@ -64,6 +82,20 @@ sourced data**, no invented index. Documented explicitly as "a
 project-specific proxy built from published vitamin data with equal
 weighting across three vitamins; an engineering construction for
 optimization, not a biological antioxidant potency model."
+
+**Recipe-level antioxidant aggregation (this was underspecified in rev3
+— now fixed):** the per-berry `antioxidant_score` values above describe
+individual ingredients. The *achieved* antioxidant score for a finished
+recipe is the **mass-weighted average across the berries actually used**:
+
+`recipe_antioxidant_score = Σ(berry_g[i] × antioxidant_score[i]) / Σ(berry_g[i])`
+
+Liquid (water or mineral_water) has no antioxidant score and is excluded
+from this calculation — the score describes the composition of the
+berry component, not dilution by liquid. **Edge case:** if
+`Σ(berry_g) == 0` (a recipe with no berries at all — should be rare
+given the 6 berry-driven target dimensions, but must be handled),
+`recipe_antioxidant_score = 0` by definition.
 
 ## 3. Serving size and mass model
 
@@ -143,15 +175,16 @@ full mineral_water liquid volume actually contributes.
   (Power Mode without a Fit emphasis is not a meaningful combination).
 
 - **Stimulant Boost** (Data Expert, Fit only — see reject rule below):
-  a **second, separate optimization objective**, deliberately kept
-  outside the 7-dimensional NNTD vector so it doesn't distort the
-  nutrient-profile metric. `caffeine_target = 100 mg/serving`,
-  `acceptable_range = [50, 200] mg`, `hard_safety_max = 200 mg`
-  (EFSA single-dose guidance). Optimizer adds 0–4.2 g guarana powder
-  (~47 mg caffeine/g, §2) to approach the target within range.
-  **Hard REJECT if requested with `Cute ≥ 80`** (raised from the
-  original `Cute = 100` threshold — 80 gives a cleaner, more defensible
-  "kid-friendly zone" boundary; see the new boundary test in §11).
+  when ON, `50 ≤ caffeine ≤ 200 mg` is a **hard feasibility constraint**
+  on the optimizer (§7) — not an optional secondary objective, and not
+  something the optimizer can satisfy with zero guarana. Within feasible
+  recipes, the optimizer pulls toward `caffeine_target = 100 mg` as a
+  tie-break (§7). `hard_safety_max = 200 mg` (EFSA single-dose guidance)
+  is enforced independently at verification time too (§8) as a final
+  guard. Optimizer adds 0–4.2 g guarana powder (~47 mg caffeine/g, §2)
+  to reach this. **Hard REJECT if requested with `Cute ≥ 80`** (raised
+  from the original `Cute = 100` threshold — 80 gives a cleaner, more
+  defensible "kid-friendly zone" boundary; see the boundary test in §11).
 
 - **liquid_base**: `water` | `mineral_water`. User-selected input, fixed
   per case (not an optimizer decision variable — see the frozen
@@ -165,16 +198,40 @@ full mineral_water liquid volume actually contributes.
 
 Constrained search over `(berry grams × 5, guarana grams)` — `liquid_g`
 is always derived from the mass balance in §3, never a free variable.
+**These are jointly optimized decision variables, not a two-stage
+process.** Do not fix guarana first and then solve berries separately
+(or vice versa): guarana displaces mass from the 250 g total, and when
+`liquid_base = mineral_water` the liquid itself carries K/Ca/Mg/Na, so
+guarana's amount can genuinely interact with how much liquid — and
+therefore how much mineral content — remains available. A sequential
+"fix guarana, then optimize berries" approach is a simplification that
+is not equivalent to the joint problem and must not be used.
 
-**Objectives:**
-1. Primary: minimize NNTD (§9) over the 6 slider-driven dimensions
-   (VitC, K, Mg, Ca, Sugar, antioxidant) plus the fixed-zero Na target.
-2. Secondary (only when Stimulant Boost is ON): bring caffeine into
-   `[50, 200] mg` (§6), independent of NNTD.
+**Objectives, in order (lexicographic):**
 
-Exact algorithm choice (constrained least-squares, heuristic search, etc.)
-is Codex's implementation task — this spec fixes objectives and
-constraints, not the solver.
+*When Stimulant Boost is OFF:*
+1. Minimize NNTD (§9) over the 6 slider-driven dimensions (VitC, K, Mg,
+   Ca, Sugar, antioxidant) plus the `liquid_base`-dependent Na target
+   defined in §5.
+
+*When Stimulant Boost is ON:*
+1. **Hard feasibility constraint** (not merely an objective): achieved
+   caffeine must satisfy `50 ≤ caffeine ≤ 200` mg. Only recipes meeting
+   this are considered valid candidates — a recipe with `caffeine = 0`
+   is infeasible when Stimulant Boost is ON, not just suboptimal. This
+   prevents the optimizer from ever "satisfying" Stimulant Boost with
+   zero guarana.
+2. Among feasible candidates, minimize NNTD (as above).
+3. Tie-break: among near-equal-NNTD feasible candidates, minimize
+   `|caffeine - 100|` (pull toward the 100 mg target from §6).
+
+Exact algorithm choice (constrained least-squares, heuristic search, a
+small custom deterministic solver, etc.) is Codex's implementation task —
+this spec fixes objectives, constraints, and their priority order, not
+the solver. Prefer a solution with minimal external dependencies if it
+doesn't compromise correctness or reproducibility in a clean-environment
+context — but correctness of the constraint ordering above takes
+priority over dependency minimalism.
 
 ## 8. Verification (deterministic, non-LLM)
 
