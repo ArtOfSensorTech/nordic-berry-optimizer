@@ -18,6 +18,22 @@ The antioxidant figure is a project-specific equal-weight proxy constructed from
 
 The baseline is exactly the frozen §10 one-shot prompt, with no nutrient tools. The official adapter uses OpenRouter's OpenAI-compatible endpoint and the fixed model ID `z-ai/glm-5.2` (Z.ai GLM 5.2), not `openrouter/free`. It sends the frozen prompt as the sole user message and omits all tool declarations, project files, web search, and file access. SPEC v1.0-rev7 explicitly supplies each case's `liquid_base` in that prompt. v1 uses an exclusive liquid-base choice: `water` or `mineral_water`; mixtures are not supported. More general liquid compositions, such as milk, coffee, or mixtures, are future work and are outside v1 and the frozen evaluation. The parser preserves an LLM's stated water versus mineral-water choice; absent or conflicting liquid declarations are recorded as invalid, never guessed or repaired.
 
+### Pre-evaluation live checkpoint
+
+After rev7 was committed, exactly one deliberately non-frozen smoke case was
+run with Data Expert 37, Genius 61, Fit 22, Cute 14, Power Mode off,
+Stimulant Boost off, and liquid base water. Using the committed configuration
+(OpenRouter, `z-ai/glm-5.2`, `temperature=0`, `top_p=1`, `max_tokens=2048`,
+`stream=false`, default reasoning), the request returned HTTP 200 with
+non-empty assistant text. This confirmed paid endpoint and live transport/
+model-response connectivity end-to-end, but not the full parser/verifier/NNTD
+success path: the committed parser classified the response `INVALID` because
+the model used parenthesized ingredient labels it did not recognize, and NNTD
+was not scorable. The raw response also specified both 100 g water and 100 g
+mineral water despite `Liquid base: water.`, violating v1's exclusive choice.
+No retry, repair, reinterpretation, parser adaptation, or protocol change was
+made after observing this output. No frozen case or result had been observed.
+
 ## Evaluation Method
 
 `tests/frozen_eval.py` contains the 14 frozen §11 cases unchanged. Both agent and baseline recipes use deterministic verification and per-dimension NNTD reporting. Baseline output records parse/call failures explicitly. Frozen evaluation artifacts are intentionally not claimed here until an explicitly identified LLM callable is supplied and the evaluation is run.

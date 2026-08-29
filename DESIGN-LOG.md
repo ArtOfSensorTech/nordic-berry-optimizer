@@ -226,3 +226,22 @@ retained the default reasoning behavior. This is a reliability and
 reproducibility correction, not a change based on evaluation performance. The
 14 frozen cases, prompts, objectives, verifier, optimizer, NNTD, nutrient
 data, constraints, and evaluation semantics remain unchanged.
+
+### TASK 3.8 — Final paid baseline smoke checkpoint
+
+After rev7 was committed, exactly one deliberately non-frozen smoke case was
+run: Data Expert 37, Genius 61, Fit 22, Cute 14, Power Mode off, Stimulant
+Boost off, liquid base water. The committed OpenRouter configuration used
+`z-ai/glm-5.2`, `temperature=0`, `top_p=1`, `max_tokens=2048`, `stream=false`,
+and default model reasoning. It returned HTTP 200 with non-empty assistant
+text, confirming paid endpoint and transport/model-response connectivity.
+
+The committed parser classified the response `INVALID` because the model used
+parenthesized ingredient labels that it did not recognize; NNTD was therefore
+not scorable. The raw response also specified both 100 g water and 100 g
+mineral water despite `Liquid base: water.`, violating v1's exclusive
+liquid-base contract. No retry, repair, manual reinterpretation, parser
+adaptation, or evaluation-protocol change followed the output. No frozen case
+was run and no frozen result was observed. The smoke validated the live
+pre-evaluation pipeline while preserving malformed or contract-violating
+baseline output for rejection.

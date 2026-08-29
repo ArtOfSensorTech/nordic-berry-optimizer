@@ -384,6 +384,23 @@ evaluation-performance change. The 14 frozen cases, prompts, objectives,
 verifier, optimizer, NNTD, nutrient data, constraints, and evaluation
 semantics remain unchanged.
 
+### Trajectory 9 — TASK 3.8 final paid baseline smoke
+
+After rev7 was committed, exactly one deliberately non-frozen case was run:
+Data Expert 37, Genius 61, Fit 22, Cute 14, Power Mode off, Stimulant Boost
+off, liquid base water. The committed OpenRouter configuration used paid
+`z-ai/glm-5.2`, `temperature=0`, `top_p=1`, `max_tokens=2048`, `stream=false`,
+and default reasoning. It returned HTTP 200 with non-empty assistant text,
+confirming paid endpoint and transport/model-response connectivity.
+
+The committed parser classified the response `INVALID` because parenthesized
+ingredient labels were not recognized, so NNTD was not scorable. The raw
+response also specified both 100 g water and 100 g mineral water despite
+`Liquid base: water.`, violating the exclusive v1 liquid-base contract. No
+retry, repair, manual reinterpretation, parser adaptation, or protocol change
+was made after the output. No frozen case or result was observed; malformed or
+contract-violating baseline output remains preserved and rejected.
+
 ---
 
 ## Final submission update — placeholder
