@@ -1,0 +1,565 @@
+[
+  {
+    "case": {
+      "id": 1,
+      "sliders": {
+        "data": 100,
+        "genius": 0,
+        "fit": 0,
+        "cute": 0
+      },
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 100%, Genius 0%, Fit 0%, Cute 0%. Power Mode: off. Stimulant Boost: off. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:32:13.164180+00:00",
+    "request_ordinal": 1,
+    "api_requests_made": 1,
+    "baseline_text": "**FORMULATION ID: 250-BLACK-LING-BLUE**\n**OBJECTIVE:** Standardized aqueous extraction of berry anthocyanins and ascorbic acid.\n**TOTAL TARGET MASS:** 250.0g\n**LIQUID BASE:** H2O (Water)\n\n### INGREDIENT MATRIX (Exact Mass in Grams)\n\n| Ingredient | Botanical Classification | Mass (g) | % of Total Mass |\n| :--- | :--- | :--- | :--- |\n| Water (Liquid Base) | H2O | 200.0g | 80.0% |\n| Blackcurrant | *Ribes nigrum* | 25.0g | 10.0% |\n| Blueberry | *Vaccinium corymbosum* | 15.0g | 6.0% |\n| Lingonberry | *Vaccinium vitis-idaea* | 10.0g | 4.0% |\n| **TOTAL** | | **250.0g** | **100.0%** |\n\n### PREPARATION PROTOCOL\n\n1. **Mass Measurement:** Utilize a calibrated digital scale to measure exactly 200.0g of water, 25.0g of blackcurrants, 15.0g of blueberries, and 10.0g of lingonberries.\n2. **Thermal Conditioning:** Heat the 200.0g of water to exactly 80\u00b0C (176\u00b0F) to optimize cellular breakdown of the berry matrices without degrading heat-sensitive ascorbic acid.\n3. **Maceration & Homogenization:** Introduce the 50.0g combined berry mass into the heated water. Mechanically blend the mixture for 45 seconds at 10,000 RPM to ensure complete structural disruption of the berry skins and seeds.\n4. **Filtration:** Pass the homogenized solution through a 200-micron stainless steel sieve to separate the aqueous extract from the solid pomace. \n5. **Thermal Equilibrium:** Cool the resulting 250.0g liquid extract to ambient room temperature (21\u00b0C / 70\u00b0F) before consumption. \n\n*Note: No stimulant additives or power-boosting compounds are included in this formulation. Data reflects exact mass parameters.*",
+    "raw_response": "**FORMULATION ID: 250-BLACK-LING-BLUE**\n**OBJECTIVE:** Standardized aqueous extraction of berry anthocyanins and ascorbic acid.\n**TOTAL TARGET MASS:** 250.0g\n**LIQUID BASE:** H2O (Water)\n\n### INGREDIENT MATRIX (Exact Mass in Grams)\n\n| Ingredient | Botanical Classification | Mass (g) | % of Total Mass |\n| :--- | :--- | :--- | :--- |\n| Water (Liquid Base) | H2O | 200.0g | 80.0% |\n| Blackcurrant | *Ribes nigrum* | 25.0g | 10.0% |\n| Blueberry | *Vaccinium corymbosum* | 15.0g | 6.0% |\n| Lingonberry | *Vaccinium vitis-idaea* | 10.0g | 4.0% |\n| **TOTAL** | | **250.0g** | **100.0%** |\n\n### PREPARATION PROTOCOL\n\n1. **Mass Measurement:** Utilize a calibrated digital scale to measure exactly 200.0g of water, 25.0g of blackcurrants, 15.0g of blueberries, and 10.0g of lingonberries.\n2. **Thermal Conditioning:** Heat the 200.0g of water to exactly 80\u00b0C (176\u00b0F) to optimize cellular breakdown of the berry matrices without degrading heat-sensitive ascorbic acid.\n3. **Maceration & Homogenization:** Introduce the 50.0g combined berry mass into the heated water. Mechanically blend the mixture for 45 seconds at 10,000 RPM to ensure complete structural disruption of the berry skins and seeds.\n4. **Filtration:** Pass the homogenized solution through a 200-micron stainless steel sieve to separate the aqueous extract from the solid pomace. \n5. **Thermal Equilibrium:** Cool the resulting 250.0g liquid extract to ambient room temperature (21\u00b0C / 70\u00b0F) before consumption. \n\n*Note: No stimulant additives or power-boosting compounds are included in this formulation. Data reflects exact mass parameters.*",
+    "parse_status": "PASS",
+    "recipe": {
+      "liquid_g": 400.0
+    },
+    "liquid_base": "water",
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "mass balance failed"
+      ],
+      "invalid_for_boost": false
+    }
+  },
+  {
+    "case": {
+      "id": 2,
+      "sliders": {
+        "data": 0,
+        "genius": 100,
+        "fit": 0,
+        "cute": 0
+      },
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 100%, Fit 0%, Cute 0%. Power Mode: off. Stimulant Boost: off. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:32:20.665512+00:00",
+    "request_ordinal": 2,
+    "api_requests_made": 1,
+    "baseline_text": "To perfectly capture the **Genius 100%** profile\u2014emphasizing visionary cognitive clarity and sophisticated flavor synergy\u2014while strictly adhering to your constraints (Power Mode: off, Stimulant Boost: off, Liquid base: water), this recipe relies on a carefully calibrated extraction of neuro-protective berries. \n\nThe sharpness of blackcurrant and the neuro-synergy of blueberry are balanced by the rare, sophisticated omega-rich profile of cloudberry, all grounded in pure water for a frictionless mental flow state. \n\nHere is the exact formulation for a 250g serving:\n\n### **\"The Eureka Infusion\"**\n\n**Exact Grams per 250g Serving:**\n\n*   **Water (Liquid Base):** 185g\n*   **Blackcurrant:** 35g \n*   **Blueberry:** 25g \n*   **Cloudberry:** 5g \n\n**Total Weight:** 250g\n\n**Preparation Method:**\n1. **Maceration:** Lightly crush the blackcurrants, blueberries, and cloudberries to release their cellular structures and anthocyanins.\n2. **Infusion:** Combine the crushed berries with the 185g of water. Allow the mixture to cold-steep in the refrigerator for 1 to 2 hours. This slow, non-thermal extraction preserves the delicate, heat-sensitive polyphenols essential for cognitive function.\n3. **Clarification:** Strain the mixture through a fine-mesh sieve or centrifuge bag, pressing gently to extract the maximum liquid without introducing bitter seed tannins.\n4. **Service:** Pour the resulting clarified infusion into a chilled glass. No ice is necessary if the ingredients were properly chilled during steeping. \n\n**Flavor & Functional Profile:**\n*   **Taste:** A deeply intellectual, tart-to-sweet progression. The blackcurrant provides an immediate, sharp alertness on the palate, seamlessly transitioning into the round, velvety richness of blueberry, and finishing with the highly nuanced, slightly tropical complexity of cloudberry. \n*   **Effect:** Uncaffeinated, smooth, and purely nootropic. It provides a grounding, clear-headed mental baseline without any spikes or crashes (Power Mode and Stimulant Boost are strictly off).",
+    "raw_response": "To perfectly capture the **Genius 100%** profile\u2014emphasizing visionary cognitive clarity and sophisticated flavor synergy\u2014while strictly adhering to your constraints (Power Mode: off, Stimulant Boost: off, Liquid base: water), this recipe relies on a carefully calibrated extraction of neuro-protective berries. \n\nThe sharpness of blackcurrant and the neuro-synergy of blueberry are balanced by the rare, sophisticated omega-rich profile of cloudberry, all grounded in pure water for a frictionless mental flow state. \n\nHere is the exact formulation for a 250g serving:\n\n### **\"The Eureka Infusion\"**\n\n**Exact Grams per 250g Serving:**\n\n*   **Water (Liquid Base):** 185g\n*   **Blackcurrant:** 35g \n*   **Blueberry:** 25g \n*   **Cloudberry:** 5g \n\n**Total Weight:** 250g\n\n**Preparation Method:**\n1. **Maceration:** Lightly crush the blackcurrants, blueberries, and cloudberries to release their cellular structures and anthocyanins.\n2. **Infusion:** Combine the crushed berries with the 185g of water. Allow the mixture to cold-steep in the refrigerator for 1 to 2 hours. This slow, non-thermal extraction preserves the delicate, heat-sensitive polyphenols essential for cognitive function.\n3. **Clarification:** Strain the mixture through a fine-mesh sieve or centrifuge bag, pressing gently to extract the maximum liquid without introducing bitter seed tannins.\n4. **Service:** Pour the resulting clarified infusion into a chilled glass. No ice is necessary if the ingredients were properly chilled during steeping. \n\n**Flavor & Functional Profile:**\n*   **Taste:** A deeply intellectual, tart-to-sweet progression. The blackcurrant provides an immediate, sharp alertness on the palate, seamlessly transitioning into the round, velvety richness of blueberry, and finishing with the highly nuanced, slightly tropical complexity of cloudberry. \n*   **Effect:** Uncaffeinated, smooth, and purely nootropic. It provides a grounding, clear-headed mental baseline without any spikes or crashes (Power Mode and Stimulant Boost are strictly off).",
+    "parse_status": "PASS",
+    "recipe": {
+      "liquid_g": 185.0
+    },
+    "liquid_base": "water",
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "mass balance failed"
+      ],
+      "invalid_for_boost": false
+    }
+  },
+  {
+    "case": {
+      "id": 3,
+      "sliders": {
+        "data": 0,
+        "genius": 0,
+        "fit": 100,
+        "cute": 0
+      },
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 0%, Fit 100%, Cute 0%. Power Mode: off. Stimulant Boost: off. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:32:34.190790+00:00",
+    "request_ordinal": 3,
+    "api_requests_made": 1,
+    "baseline_text": "Here is a refreshing, low-calorie hydration drink tailored for a **Fit 100%** profile. It focuses on pure hydration, natural antioxidants, and electrolytes without any stimulants or heavy energy boosters. \n\n### \"Fit Focus Berry Hydrator\"\n**Total Serving Size:** 250g\n\n**Ingredients:**\n*   **Water:** 210g\n*   **Mineral Water:** 20g (adds a light effervescence and trace electrolytes for hydration)\n*   **Blackcurrant:** 10g (rich in Vitamin C and antioxidants for recovery)\n*   **Lingonberry:** 10g (low in sugar, provides a sharp, tart flavor profile)\n\n**Instructions:**\n1. Lightly muddle the blackcurrants and lingonberries at the bottom of a glass to release their natural juices without crushing the bitter seeds.\n2. Add the 210g of plain water and stir well to infuse the flavors.\n3. Top off the drink with the 20g of chilled mineral water for a slight fizz.\n4. Optional: Strain the berries out if you prefer a clear liquid, or leave them in for a rustic, fiber-rich fitness drink. \n\n**Why this fits your parameters:**\n*   **Fit 100%:** Blackcurrants and lingonberries are incredibly nutrient-dense, low in calories, and support immune function and muscle recovery. The water/mineral water base ensures maximum hydration.\n*   **Power Mode / Stimulant Boost (Off):** No added sugars, heavy carbohydrates, or caffeine. It relies entirely on the natural, subtle flavors of the berries and pure water. \n*   **Data Expert / Genius (0%):** No complex nootropics or adaptogens\u2014just straightforward, functional hydration.",
+    "raw_response": "Here is a refreshing, low-calorie hydration drink tailored for a **Fit 100%** profile. It focuses on pure hydration, natural antioxidants, and electrolytes without any stimulants or heavy energy boosters. \n\n### \"Fit Focus Berry Hydrator\"\n**Total Serving Size:** 250g\n\n**Ingredients:**\n*   **Water:** 210g\n*   **Mineral Water:** 20g (adds a light effervescence and trace electrolytes for hydration)\n*   **Blackcurrant:** 10g (rich in Vitamin C and antioxidants for recovery)\n*   **Lingonberry:** 10g (low in sugar, provides a sharp, tart flavor profile)\n\n**Instructions:**\n1. Lightly muddle the blackcurrants and lingonberries at the bottom of a glass to release their natural juices without crushing the bitter seeds.\n2. Add the 210g of plain water and stir well to infuse the flavors.\n3. Top off the drink with the 20g of chilled mineral water for a slight fizz.\n4. Optional: Strain the berries out if you prefer a clear liquid, or leave them in for a rustic, fiber-rich fitness drink. \n\n**Why this fits your parameters:**\n*   **Fit 100%:** Blackcurrants and lingonberries are incredibly nutrient-dense, low in calories, and support immune function and muscle recovery. The water/mineral water base ensures maximum hydration.\n*   **Power Mode / Stimulant Boost (Off):** No added sugars, heavy carbohydrates, or caffeine. It relies entirely on the natural, subtle flavors of the berries and pure water. \n*   **Data Expert / Genius (0%):** No complex nootropics or adaptogens\u2014just straightforward, functional hydration.",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 4,
+      "sliders": {
+        "data": 0,
+        "genius": 0,
+        "fit": 0,
+        "cute": 100
+      },
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 0%, Fit 0%, Cute 100%. Power Mode: off. Stimulant Boost: off. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:32:41.866850+00:00",
+    "request_ordinal": 4,
+    "api_requests_made": 1,
+    "baseline_text": "# \ud83e\uded0 Cloudling Blush \u2014 a Cute Berry Sip\n\nA soft, blush-pink Nordic berry drink with a gentle, jelly-like mouthfeel from mashed cloudberries. Sweet, round, and adorable.\n\n### Ingredients (250g serving)\n\n| Ingredient | Amount |\n|---|---|\n| Cloudberry | 40g |\n| Lingonberry | 25g |\n| Blueberry | 15g |\n| Water | 170g |\n\n### Method\n1. Gently warm the water to about 40\u00b0C (just lukewarm \u2014 cozy, not hot).\n2. Mash the cloudberries with a fork until they turn into a soft, golden-pink pulp.\n3. Lightly crush the lingonberries and blueberries just enough to release their color, leaving a few whole for cute little flecks floating in the glass.\n4. Stir all the berries into the water until the liquid turns a delicate blush pink.\n5. Let it rest for 5 minutes so the flavors mingle.\n6. Strain lightly (optional) or serve as-is in a small rounded glass for maximum cuteness.\n\n**Serving suggestion:** Pour into a short, rounded tumbler and top with a few whole blueberries bobbing on the surface. \ud83c\udf38",
+    "raw_response": "# \ud83e\uded0 Cloudling Blush \u2014 a Cute Berry Sip\n\nA soft, blush-pink Nordic berry drink with a gentle, jelly-like mouthfeel from mashed cloudberries. Sweet, round, and adorable.\n\n### Ingredients (250g serving)\n\n| Ingredient | Amount |\n|---|---|\n| Cloudberry | 40g |\n| Lingonberry | 25g |\n| Blueberry | 15g |\n| Water | 170g |\n\n### Method\n1. Gently warm the water to about 40\u00b0C (just lukewarm \u2014 cozy, not hot).\n2. Mash the cloudberries with a fork until they turn into a soft, golden-pink pulp.\n3. Lightly crush the lingonberries and blueberries just enough to release their color, leaving a few whole for cute little flecks floating in the glass.\n4. Stir all the berries into the water until the liquid turns a delicate blush pink.\n5. Let it rest for 5 minutes so the flavors mingle.\n6. Strain lightly (optional) or serve as-is in a small rounded glass for maximum cuteness.\n\n**Serving suggestion:** Pour into a short, rounded tumbler and top with a few whole blueberries bobbing on the surface. \ud83c\udf38",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 5,
+      "sliders": {
+        "data": 25,
+        "genius": 25,
+        "fit": 25,
+        "cute": 25
+      },
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 25%, Genius 25%, Fit 25%, Cute 25%. Power Mode: off. Stimulant Boost: off. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:32:48.596045+00:00",
+    "request_ordinal": 5,
+    "api_requests_made": 1,
+    "baseline_text": "Here is a custom berry water recipe precisely",
+    "raw_response": "Here is a custom berry water recipe precisely",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 6,
+      "sliders": {
+        "data": 100,
+        "genius": 0,
+        "fit": 0,
+        "cute": 0
+      },
+      "liquid_base": "mineral_water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 100%, Genius 0%, Fit 0%, Cute 0%. Power Mode: off. Stimulant Boost: off. Liquid base: mineral_water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:33:04.795623+00:00",
+    "request_ordinal": 6,
+    "api_requests_made": 1,
+    "baseline_text": "**Recipe Designation:** Berry Matrix Infusion 01\n**Liquid Base:** Mineral Water\n**Total Serving Mass:** 250g\n\n**Ingredient Allocation:**\n*   Mineral water: 200g\n*   Blackcurrant: 25g\n*   Blueberry: 20g\n*   Lingonberry: 5g\n\n**Preparation Protocol:**\n1. Purge the blackcurrants, blueberries, and lingonberries of any extraneous debris. \n2. Apply mechanical muddling to the 50g berry aggregate to rupture cellular walls and release intracellular juices.\n3. Transfer the macerated berry mass into a 250g-capacity vessel.\n4. Introduce the 200g of chilled mineral water to the vessel. \n5. Agitate the mixture for 15 seconds to ensure optimal solute distribution without excessive oxidation.\n6. Filter the solution through a fine-mesh sieve to isolate particulate matter, yielding a clarified 250g beverage. \n\n**Analytical Profile:**\nThe formulation utilizes a 4:1 ratio of mineral water to berry mass. Blackcurrant provides the primary structural flavor and anthocyanin density, blueberry acts as a neutralizing buffer to moderate acidity, and lingonberry introduces a high-frequency tartness to balance the final pH. No stimulants or power-boosting additives are present.",
+    "raw_response": "**Recipe Designation:** Berry Matrix Infusion 01\n**Liquid Base:** Mineral Water\n**Total Serving Mass:** 250g\n\n**Ingredient Allocation:**\n*   Mineral water: 200g\n*   Blackcurrant: 25g\n*   Blueberry: 20g\n*   Lingonberry: 5g\n\n**Preparation Protocol:**\n1. Purge the blackcurrants, blueberries, and lingonberries of any extraneous debris. \n2. Apply mechanical muddling to the 50g berry aggregate to rupture cellular walls and release intracellular juices.\n3. Transfer the macerated berry mass into a 250g-capacity vessel.\n4. Introduce the 200g of chilled mineral water to the vessel. \n5. Agitate the mixture for 15 seconds to ensure optimal solute distribution without excessive oxidation.\n6. Filter the solution through a fine-mesh sieve to isolate particulate matter, yielding a clarified 250g beverage. \n\n**Analytical Profile:**\nThe formulation utilizes a 4:1 ratio of mineral water to berry mass. Blackcurrant provides the primary structural flavor and anthocyanin density, blueberry acts as a neutralizing buffer to moderate acidity, and lingonberry introduces a high-frequency tartness to balance the final pH. No stimulants or power-boosting additives are present.",
+    "parse_status": "PASS",
+    "recipe": {
+      "liquid_g": 200.0,
+      "blackcurrant": 25.0,
+      "blueberry": 20.0,
+      "lingonberry": 5.0
+    },
+    "liquid_base": "mineral_water",
+    "verification": {
+      "status": "PASS",
+      "warnings": [],
+      "errors": [],
+      "invalid_for_boost": false,
+      "totals": {
+        "vitc_mg": 33.967,
+        "k_mg": 138.0,
+        "mg_mg": 22.71,
+        "ca_mg": 32.3,
+        "na_mg": 91.0,
+        "sugar_g": 4.2315000000000005,
+        "antioxidant_score": 0.5202253241394744,
+        "kcal": 33.864999999999995,
+        "fiber_g": 2.24,
+        "caffeine_mg": 0.0
+      },
+      "target": {
+        "vitc_mg": 45.0,
+        "k_mg": 315.0,
+        "mg_mg": 31.5,
+        "ca_mg": 12.0,
+        "sugar_g": 2.5,
+        "antioxidant_score": 0.4,
+        "na_mg": 25.0
+      },
+      "metric": {
+        "per_dimension": {
+          "vitc_mg": 0.07355333333333335,
+          "k_mg": 0.5057142857142857,
+          "mg_mg": 0.2511428571428571,
+          "ca_mg": 0.33833333333333326,
+          "na_mg": 0.66,
+          "sugar_g": 0.06926000000000002,
+          "antioxidant_score": 0.1202253241394744
+        },
+        "nntd": 0.2883184476661834
+      },
+      "unreachable_dimensions": []
+    }
+  },
+  {
+    "case": {
+      "id": 7,
+      "sliders": {
+        "data": 0,
+        "genius": 0,
+        "fit": 100,
+        "cute": 0
+      },
+      "power_mode": true,
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 0%, Fit 100%, Cute 0%. Power Mode: on. Stimulant Boost: off. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:33:09.563868+00:00",
+    "request_ordinal": 7,
+    "api_requests_made": 1,
+    "baseline_text": "Here is a drink recipe tailored precisely to your requested parameters. To achieve the **Fit 100%** profile while keeping **Power Mode on** and **Cute 0%**, this recipe uses highly tart, antioxidant-dense berries (blackcurrant and lingonberry) for a sharp, athletic hydration boost. There are no sweet or delicate berries (like blueberry or cloudberry) used, ensuring a strict, zero-cute, performance-focused flavor profile.\n\n### **Tart Fuel Sparkling Berry Water**\n**Total Serving Size:** 250g  \n**Liquid Base:** Water / Mineral Water  \n**Profile:** Fit 100% | Power Mode: ON | Stimulant Boost: OFF | Cute 0% \n\n#### **Ingredients (Exact Grams for 250g):**\n*   **Water:** 100g\n*   **Mineral Water (Carbonated):** 100g\n*   **Blackcurrant:** 25g\n*   **Lingonberry:** 15g\n*   **Redcurrant:** 10g\n\n*(Note: Blueberry and Cloudberry are omitted to prevent any \"Cute\" sweetness and maintain a strictly Fit/astringent profile).*\n\n#### **Preparation:**\n1.  **Power Extraction (Power Mode: ON):** In a sturdy shaker or glass, add the blackcurrant (25g), lingonberry (15g), and redcurrant (10g). Muddle or crush the berries thoroughly to release their tart, nutrient-dense juices. \n2.  **Base Hydration:** Pour the plain water (100g) over the crushed berries. Stir aggressively to extract the maximum amount of flavor and antioxidants without adding heat.\n3.  **Strain for Fit Profile:** Fine-strain the mixture into a 250g serving glass to remove the skins and seeds. This leaves a clean, sharp, highly refreshing liquid perfectly suited for the Fit profile.\n4.  **Activate Fizz:** Top the strained liquid with the mineral water (100g).",
+    "raw_response": "Here is a drink recipe tailored precisely to your requested parameters. To achieve the **Fit 100%** profile while keeping **Power Mode on** and **Cute 0%**, this recipe uses highly tart, antioxidant-dense berries (blackcurrant and lingonberry) for a sharp, athletic hydration boost. There are no sweet or delicate berries (like blueberry or cloudberry) used, ensuring a strict, zero-cute, performance-focused flavor profile.\n\n### **Tart Fuel Sparkling Berry Water**\n**Total Serving Size:** 250g  \n**Liquid Base:** Water / Mineral Water  \n**Profile:** Fit 100% | Power Mode: ON | Stimulant Boost: OFF | Cute 0% \n\n#### **Ingredients (Exact Grams for 250g):**\n*   **Water:** 100g\n*   **Mineral Water (Carbonated):** 100g\n*   **Blackcurrant:** 25g\n*   **Lingonberry:** 15g\n*   **Redcurrant:** 10g\n\n*(Note: Blueberry and Cloudberry are omitted to prevent any \"Cute\" sweetness and maintain a strictly Fit/astringent profile).*\n\n#### **Preparation:**\n1.  **Power Extraction (Power Mode: ON):** In a sturdy shaker or glass, add the blackcurrant (25g), lingonberry (15g), and redcurrant (10g). Muddle or crush the berries thoroughly to release their tart, nutrient-dense juices. \n2.  **Base Hydration:** Pour the plain water (100g) over the crushed berries. Stir aggressively to extract the maximum amount of flavor and antioxidants without adding heat.\n3.  **Strain for Fit Profile:** Fine-strain the mixture into a 250g serving glass to remove the skins and seeds. This leaves a clean, sharp, highly refreshing liquid perfectly suited for the Fit profile.\n4.  **Activate Fizz:** Top the strained liquid with the mineral water (100g).",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 8,
+      "sliders": {
+        "data": 0,
+        "genius": 0,
+        "fit": 100,
+        "cute": 0
+      },
+      "power_mode": true,
+      "stimulant_boost": true,
+      "liquid_base": "mineral_water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 0%, Fit 100%, Cute 0%. Power Mode: on. Stimulant Boost: on. Liquid base: mineral_water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:33:24.482282+00:00",
+    "request_ordinal": 8,
+    "api_requests_made": 1,
+    "baseline_text": "**Recipe Name: Nordic Power Surge**\n\n**Target Profile:** Fit 100% | Power Mode: ON | Stimulant Boost: ON\n**Liquid Base:** Mineral Water\n**Serving Size:** 250g\n\nThis drink is engineered for pure performance and energy. By utilizing the sharp, tart profiles of blackcurrant and lingonberry, it delivers a natural stimulant kick and a massive dose of Vitamin C and antioxidants without weighing you down. The carbonation from the mineral water provides a crisp, aggressive texture suited for Power Mode.\n\n### Ingredients (Exact Grams for 250g Serving)\n\n*   **Mineral Water:** 220g\n*   **Blackcurrant:** 15g\n*   **Lingonberry:** 10g\n*   **Blueberry:** 5g\n\n### Preparation Instructions\n\n1.  **Macerate the Berries:** In a sturdy glass, add the blackcurrants (15g), lingonberries (10g), and blueberries (5g). Lightly crush them with a muddler to release their tart juices and natural stimulant compounds. \n2.  **Activate Power Mode:** Pour the 220g of chilled mineral water directly over the crushed berries. The high carbonation will interact with the sharp acidity of the berries, creating an energizing, effervescent bite.\n3.  **Stir & Serve:** Stir vigorously for 10 seconds to infuse the water with the berry extracts. Drink immediately while cold and highly carbonated for maximum stimulant effect. \n\n*Note: No straining is required. Consuming the crushed berries at the end provides a final, fiber-rich burst of Fit-focused energy.*",
+    "raw_response": "**Recipe Name: Nordic Power Surge**\n\n**Target Profile:** Fit 100% | Power Mode: ON | Stimulant Boost: ON\n**Liquid Base:** Mineral Water\n**Serving Size:** 250g\n\nThis drink is engineered for pure performance and energy. By utilizing the sharp, tart profiles of blackcurrant and lingonberry, it delivers a natural stimulant kick and a massive dose of Vitamin C and antioxidants without weighing you down. The carbonation from the mineral water provides a crisp, aggressive texture suited for Power Mode.\n\n### Ingredients (Exact Grams for 250g Serving)\n\n*   **Mineral Water:** 220g\n*   **Blackcurrant:** 15g\n*   **Lingonberry:** 10g\n*   **Blueberry:** 5g\n\n### Preparation Instructions\n\n1.  **Macerate the Berries:** In a sturdy glass, add the blackcurrants (15g), lingonberries (10g), and blueberries (5g). Lightly crush them with a muddler to release their tart juices and natural stimulant compounds. \n2.  **Activate Power Mode:** Pour the 220g of chilled mineral water directly over the crushed berries. The high carbonation will interact with the sharp acidity of the berries, creating an energizing, effervescent bite.\n3.  **Stir & Serve:** Stir vigorously for 10 seconds to infuse the water with the berry extracts. Drink immediately while cold and highly carbonated for maximum stimulant effect. \n\n*Note: No straining is required. Consuming the crushed berries at the end provides a final, fiber-rich burst of Fit-focused energy.*",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 9,
+      "sliders": {
+        "data": 100,
+        "genius": 0,
+        "fit": 0,
+        "cute": 0
+      },
+      "stimulant_boost": true,
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 100%, Genius 0%, Fit 0%, Cute 0%. Power Mode: off. Stimulant Boost: on. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:33:31.000652+00:00",
+    "request_ordinal": 9,
+    "api_requests_made": 1,
+    "baseline_text": "**Formulation ID:** BEV-250-EXP-01  \n**Operator Persona:** Data Expert (100%)  \n**Power Mode:** Off (Steady-State)  \n**Stimulant Boost:** On (Sensory Acidity Matrix)  \n**Base Solvent:** Water (H2O)  \n\n**Ingredient Variables (Total Output Mass: 250g):**  \n*   **Water (Filtered, 20\u00b0C):** 180g  \n*   **Blackcurrant (Whole, raw):** 40g  \n*   **Lingonberry (Whole, raw):** 30g  \n\n**Extraction & Processing Protocol:**  \n1. **Cellular Rupture:** Apply mechanical force to the 40g of blackcurrants and 30g of lingonberries via mortar or fine-mesh sieve to extract maximum juice and organic acids.  \n2. **Solvent Integration:** Combine the resulting berry matrix with 180g of water in a standardized 250g vessel.  \n3. **Homogenization:** Agitate the mixture for 45 seconds to ensure complete solubility of the soluble solids into the water base.  \n4. **Filtration (Optional):** Decant the fluid through a 100-micron filter to remove insoluble seed and skin particulates, optimizing fluid dynamics for consumption.  \n\n**Formulation Analysis:**  \nThe 70g berry concentration relative to the 180g water base generates a high density of titratable acids (specifically malic and citric acid from the lingonberry and blackcurrant). This sharp sensory profile triggers an acute neurological stimulation response, satisfying the Stimulant Boost requirement. The formulation remains in a steady-state operational parameter (Power Mode: Off) with no exogenous energy modifiers added. Data acquisition relies strictly on the natural chemical composition of the specified ingredients.",
+    "raw_response": "**Formulation ID:** BEV-250-EXP-01  \n**Operator Persona:** Data Expert (100%)  \n**Power Mode:** Off (Steady-State)  \n**Stimulant Boost:** On (Sensory Acidity Matrix)  \n**Base Solvent:** Water (H2O)  \n\n**Ingredient Variables (Total Output Mass: 250g):**  \n*   **Water (Filtered, 20\u00b0C):** 180g  \n*   **Blackcurrant (Whole, raw):** 40g  \n*   **Lingonberry (Whole, raw):** 30g  \n\n**Extraction & Processing Protocol:**  \n1. **Cellular Rupture:** Apply mechanical force to the 40g of blackcurrants and 30g of lingonberries via mortar or fine-mesh sieve to extract maximum juice and organic acids.  \n2. **Solvent Integration:** Combine the resulting berry matrix with 180g of water in a standardized 250g vessel.  \n3. **Homogenization:** Agitate the mixture for 45 seconds to ensure complete solubility of the soluble solids into the water base.  \n4. **Filtration (Optional):** Decant the fluid through a 100-micron filter to remove insoluble seed and skin particulates, optimizing fluid dynamics for consumption.  \n\n**Formulation Analysis:**  \nThe 70g berry concentration relative to the 180g water base generates a high density of titratable acids (specifically malic and citric acid from the lingonberry and blackcurrant). This sharp sensory profile triggers an acute neurological stimulation response, satisfying the Stimulant Boost requirement. The formulation remains in a steady-state operational parameter (Power Mode: Off) with no exogenous energy modifiers added. Data acquisition relies strictly on the natural chemical composition of the specified ingredients.",
+    "parse_status": "PASS",
+    "recipe": {
+      "liquid_g": 360.0
+    },
+    "liquid_base": "water",
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "mass balance failed"
+      ],
+      "invalid_for_boost": false
+    }
+  },
+  {
+    "case": {
+      "id": 10,
+      "sliders": {
+        "data": 0,
+        "genius": 100,
+        "fit": 0,
+        "cute": 0
+      },
+      "stimulant_boost": true,
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 100%, Fit 0%, Cute 0%. Power Mode: off. Stimulant Boost: on. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:33:44.917429+00:00",
+    "request_ordinal": 10,
+    "api_requests_made": 1,
+    "baseline_text": "**The Synaptic Igniter**\n\nA serious, no-nonsense cerebral tonic designed to awaken the mind and sharpen intellectual clarity. This formulation leverages the natural stimulating tartness of blackcurrant and the neuro-protective anthocyanins of blueberry to provide a pure cognitive boost. \n\n**Ingredients (250g Serving):**\n*   **Water:** 200g\n*   **Blackcurrant:** 30g\n*   **Blueberry:** 20g\n\n**Preparation:**\n1. Gently crush the 30g of blackcurrants and 20g of blueberries to release their active compounds. \n2. Heat the 200g of water to just below boiling (around 80\u00b0C) to optimize the extraction of the berries' cognitive-boosting properties without destroying their delicate antioxidants.\n3. Pour the hot water over the crushed berries and allow them to steep for 7 to 10 minutes. \n4. Strain the liquid through a fine mesh to remove the pulp, resulting in a clear, sharp, and intellectually stimulating infusion. \n\n**Profile Notes:**\n*Genius 100%*: Formulated specifically to support cerebral blood flow and mental acuity. \n*Stimulant Boost*: The sharp, astringent nature of the blackcurrant provides an immediate, natural awakening effect to the senses, cutting through mental fog without the need for artificial stimulants. \n*Power Mode Off*: The extraction is smooth and sustained, providing a steady state of focus rather than an aggressive spike.",
+    "raw_response": "**The Synaptic Igniter**\n\nA serious, no-nonsense cerebral tonic designed to awaken the mind and sharpen intellectual clarity. This formulation leverages the natural stimulating tartness of blackcurrant and the neuro-protective anthocyanins of blueberry to provide a pure cognitive boost. \n\n**Ingredients (250g Serving):**\n*   **Water:** 200g\n*   **Blackcurrant:** 30g\n*   **Blueberry:** 20g\n\n**Preparation:**\n1. Gently crush the 30g of blackcurrants and 20g of blueberries to release their active compounds. \n2. Heat the 200g of water to just below boiling (around 80\u00b0C) to optimize the extraction of the berries' cognitive-boosting properties without destroying their delicate antioxidants.\n3. Pour the hot water over the crushed berries and allow them to steep for 7 to 10 minutes. \n4. Strain the liquid through a fine mesh to remove the pulp, resulting in a clear, sharp, and intellectually stimulating infusion. \n\n**Profile Notes:**\n*Genius 100%*: Formulated specifically to support cerebral blood flow and mental acuity. \n*Stimulant Boost*: The sharp, astringent nature of the blackcurrant provides an immediate, natural awakening effect to the senses, cutting through mental fog without the need for artificial stimulants. \n*Power Mode Off*: The extraction is smooth and sustained, providing a steady state of focus rather than an aggressive spike.",
+    "parse_status": "PASS",
+    "recipe": {
+      "liquid_g": 200.0
+    },
+    "liquid_base": "water",
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "mass balance failed"
+      ],
+      "invalid_for_boost": false
+    }
+  },
+  {
+    "case": {
+      "id": 11,
+      "sliders": {
+        "data": 0,
+        "genius": 0,
+        "fit": 0,
+        "cute": 100
+      },
+      "stimulant_boost": true,
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 0%, Fit 0%, Cute 100%. Power Mode: off. Stimulant Boost: on. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:33:58.158907+00:00",
+    "request_ordinal": 11,
+    "api_requests_made": 1,
+    "baseline_text": "Here is a recipe for a light, adorable, and naturally energizing berry drink that perfectly matches your parameters. \n\n**Drink Name:** Ruby & Gold Fizz\n**Total Serving Size:** 250g\n\n### Ingredients (Exact Grams):\n*   **Water:** 150g *(Liquid base)*\n*   **Mineral water:** 50g *(Adds a cute, refreshing sparkle)*\n*   **Redcurrant:** 25g *(Provides a bright, cute ruby-pink hue and tartness)*\n*   **Blackcurrant:** 15g *(Stimulant Boost: packed with natural fruit sugars and high Vitamin C for a natural, light energy lift)*\n*   **Cloudberry:** 10g *(Adds a cute golden color and a delicate, sweet floral flavor)*\n\n### Instructions:\n1. **Muddle the Berries:** Gently muddle the redcurrants, blackcurrants, and cloudberries in a glass to release their cute pink and golden juices without crushing the bitter seeds.\n2. **Mix the Base:** Pour the 150g of plain water over the muddled berries and stir well, allowing the natural fruit sugars to infuse into the water. \n3. **Add the Fizz:** Slowly pour in the 50g of chilled mineral water to create a light, sparkling effervescence. \n4. **Garnish (Optional but cute):** Float a few whole redcurrants on top for maximum cuteness. \n\n### Profile Breakdown:\n*   **Cute 100%:** The combination of delicate ruby-red redcurrants and golden cloudberries creates a beautiful, sunset-like pinkish-orange drink. The light fizz from the mineral water makes it playful, bubbly, and visually adorable.\n*   **Stimulant Boost (On):** Achieved naturally through the blackcurrants, which are rich in Vitamin C and natural fructose, giving you a clean, jitter-free energy lift without needing artificial stimulants. \n*   **Power Mode (Off):** The flavors are kept light, tart, and sweet. There are no heavy, dark, or overpowering berry concentrates, keeping the drink refreshing and delicate.\n*   **Liquid Base (Water):** The primary liquid is plain water, ensuring proper hydration and a clean canvas for the cute berry flavors.",
+    "raw_response": "Here is a recipe for a light, adorable, and naturally energizing berry drink that perfectly matches your parameters. \n\n**Drink Name:** Ruby & Gold Fizz\n**Total Serving Size:** 250g\n\n### Ingredients (Exact Grams):\n*   **Water:** 150g *(Liquid base)*\n*   **Mineral water:** 50g *(Adds a cute, refreshing sparkle)*\n*   **Redcurrant:** 25g *(Provides a bright, cute ruby-pink hue and tartness)*\n*   **Blackcurrant:** 15g *(Stimulant Boost: packed with natural fruit sugars and high Vitamin C for a natural, light energy lift)*\n*   **Cloudberry:** 10g *(Adds a cute golden color and a delicate, sweet floral flavor)*\n\n### Instructions:\n1. **Muddle the Berries:** Gently muddle the redcurrants, blackcurrants, and cloudberries in a glass to release their cute pink and golden juices without crushing the bitter seeds.\n2. **Mix the Base:** Pour the 150g of plain water over the muddled berries and stir well, allowing the natural fruit sugars to infuse into the water. \n3. **Add the Fizz:** Slowly pour in the 50g of chilled mineral water to create a light, sparkling effervescence. \n4. **Garnish (Optional but cute):** Float a few whole redcurrants on top for maximum cuteness. \n\n### Profile Breakdown:\n*   **Cute 100%:** The combination of delicate ruby-red redcurrants and golden cloudberries creates a beautiful, sunset-like pinkish-orange drink. The light fizz from the mineral water makes it playful, bubbly, and visually adorable.\n*   **Stimulant Boost (On):** Achieved naturally through the blackcurrants, which are rich in Vitamin C and natural fructose, giving you a clean, jitter-free energy lift without needing artificial stimulants. \n*   **Power Mode (Off):** The flavors are kept light, tart, and sweet. There are no heavy, dark, or overpowering berry concentrates, keeping the drink refreshing and delicate.\n*   **Liquid Base (Water):** The primary liquid is plain water, ensuring proper hydration and a clean canvas for the cute berry flavors.",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 12,
+      "sliders": {
+        "data": 0,
+        "genius": 0,
+        "fit": 0,
+        "cute": 100
+      },
+      "liquid_base": "mineral_water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 0%, Genius 0%, Fit 0%, Cute 100%. Power Mode: off. Stimulant Boost: off. Liquid base: mineral_water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:34:09.163398+00:00",
+    "request_ordinal": 12,
+    "api_requests_made": 1,
+    "baseline_text": "Here is a delightfully sweet and visually charming berry drink designed to be 100% Cute! \n\n**Recipe Name: Ruby & Sapphire Fizz**\n\n**Ingredients for a 250g serving:**\n*   **Mineral water:** 200g (chilled)\n*   **Blueberry:** 35g (fresh or thawed)\n*   **Redcurrant:** 15g (fresh, removed from the stem)\n\n**Instructions:**\n1. Lightly muddle the blueberries and redcurrants in the bottom of a glass to release their sweet juices and lovely colors, leaving some whole for a cute, jewel-like presentation.\n2. Add a few ice cubes if desired (note: ice weight is separate from the 250g drink weight).\n3. Gently pour the chilled mineral water over the muddled berries. \n4. Give it a very gentle stir to combine the flavors without losing the carbonation. \n\nThis drink is light, naturally sweet, perfectly bubbly, and has a beautiful pinkish-purple hue that is absolutely adorable!",
+    "raw_response": "Here is a delightfully sweet and visually charming berry drink designed to be 100% Cute! \n\n**Recipe Name: Ruby & Sapphire Fizz**\n\n**Ingredients for a 250g serving:**\n*   **Mineral water:** 200g (chilled)\n*   **Blueberry:** 35g (fresh or thawed)\n*   **Redcurrant:** 15g (fresh, removed from the stem)\n\n**Instructions:**\n1. Lightly muddle the blueberries and redcurrants in the bottom of a glass to release their sweet juices and lovely colors, leaving some whole for a cute, jewel-like presentation.\n2. Add a few ice cubes if desired (note: ice weight is separate from the 250g drink weight).\n3. Gently pour the chilled mineral water over the muddled berries. \n4. Give it a very gentle stir to combine the flavors without losing the carbonation. \n\nThis drink is light, naturally sweet, perfectly bubbly, and has a beautiful pinkish-purple hue that is absolutely adorable!",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 13,
+      "sliders": {
+        "data": 100,
+        "genius": 100,
+        "fit": 100,
+        "cute": 100
+      },
+      "power_mode": true,
+      "stimulant_boost": true,
+      "liquid_base": "mineral_water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 100%, Genius 100%, Fit 100%, Cute 100%. Power Mode: on. Stimulant Boost: on. Liquid base: mineral_water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:34:14.233800+00:00",
+    "request_ordinal": 13,
+    "api_requests_made": 1,
+    "baseline_text": "**SYSTEM INITIATED: POWER MODE [ON] | STIMULANT BOOST [ON]**\n**PARAMETERS:** Data Expert 100% | Genius 100% | Fit 100% | Cute 100%\n**LIQUID BASE:** Mineral Water\n\nHere is the precisely calculated formula for a 250g serving of the **\"Nordic Genius Power Elixir\"**. This recipe utilizes high-antioxidant berries to maximize cognitive function (Genius), sharp tartness for metabolic stimulation (Fit/Stimulant), and a vibrant, aesthetically pleasing color profile (Cute), all measured with absolute analytical precision (Data Expert).\n\n### **Ingredient Formula (250g Total Serving)**\n\n*   **Mineral Water:** 185g *(Liquid base; highly carbonated for the Stimulant Boost)*\n*   **Blueberry:** 30g *(Genius 100% - high in anthocyanins for neuro-protective cognitive enhancement)*\n*   **Blackcurrant:** 20g *(Fit 100% / Stimulant Boost - intense, sharp flavor profile and high Vitamin C for metabolic stimulation)*\n*   **Cloudberry:** 10g *(Cute 100% - adds a golden hue and rare, delicate sweetness to balance the tartness)*\n*   **Lingonberry:** 5g *(Power Mode - highly concentrated tartness to trigger an immediate sensory awakening)*\n\n### **Preparation Protocol**\n\n1.  **Extraction:** Muddle the 30g of blueberries, 20g of blackcurrants, 10g of cloudberries, and 5g of lingonberries in a precise 250g-capacity vessel until their cellular walls are broken down and juices are fully released.\n2.  **Filtration (Optional but recommended for Data Expert clarity):** Strain the berry pulp through a fine-mesh sieve to achieve a pristine, jewel-toned liquid, leaving behind the skins for a smoother mouthfeel.\n3.  **Infusion:** Pour exactly 185g of ice-cold, highly carbonated mineral water into the berry extract. \n4.  **Activation:** Stir gently exactly 3 times clockwise to integrate the mixture without dissipating the carbonation (Stimulant Boost). \n\n**Nutritional Output:** Ultra-low calorie, high-vitamin C, neuro-protective anthocyanins, and an energizing tartness profile. Drink immediately to maximize the Power Mode effects.",
+    "raw_response": "**SYSTEM INITIATED: POWER MODE [ON] | STIMULANT BOOST [ON]**\n**PARAMETERS:** Data Expert 100% | Genius 100% | Fit 100% | Cute 100%\n**LIQUID BASE:** Mineral Water\n\nHere is the precisely calculated formula for a 250g serving of the **\"Nordic Genius Power Elixir\"**. This recipe utilizes high-antioxidant berries to maximize cognitive function (Genius), sharp tartness for metabolic stimulation (Fit/Stimulant), and a vibrant, aesthetically pleasing color profile (Cute), all measured with absolute analytical precision (Data Expert).\n\n### **Ingredient Formula (250g Total Serving)**\n\n*   **Mineral Water:** 185g *(Liquid base; highly carbonated for the Stimulant Boost)*\n*   **Blueberry:** 30g *(Genius 100% - high in anthocyanins for neuro-protective cognitive enhancement)*\n*   **Blackcurrant:** 20g *(Fit 100% / Stimulant Boost - intense, sharp flavor profile and high Vitamin C for metabolic stimulation)*\n*   **Cloudberry:** 10g *(Cute 100% - adds a golden hue and rare, delicate sweetness to balance the tartness)*\n*   **Lingonberry:** 5g *(Power Mode - highly concentrated tartness to trigger an immediate sensory awakening)*\n\n### **Preparation Protocol**\n\n1.  **Extraction:** Muddle the 30g of blueberries, 20g of blackcurrants, 10g of cloudberries, and 5g of lingonberries in a precise 250g-capacity vessel until their cellular walls are broken down and juices are fully released.\n2.  **Filtration (Optional but recommended for Data Expert clarity):** Strain the berry pulp through a fine-mesh sieve to achieve a pristine, jewel-toned liquid, leaving behind the skins for a smoother mouthfeel.\n3.  **Infusion:** Pour exactly 185g of ice-cold, highly carbonated mineral water into the berry extract. \n4.  **Activation:** Stir gently exactly 3 times clockwise to integrate the mixture without dissipating the carbonation (Stimulant Boost). \n\n**Nutritional Output:** Ultra-low calorie, high-vitamin C, neuro-protective anthocyanins, and an energizing tartness profile. Drink immediately to maximize the Power Mode effects.",
+    "parse_status": "INVALID",
+    "recipe": {},
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline output does not specify a supported liquid base"
+      ]
+    }
+  },
+  {
+    "case": {
+      "id": 14,
+      "sliders": {
+        "data": 21,
+        "genius": 0,
+        "fit": 0,
+        "cute": 79
+      },
+      "stimulant_boost": true,
+      "liquid_base": "water"
+    },
+    "provider": "OpenRouter",
+    "model": "z-ai/glm-5.2",
+    "generation_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "prompt": "Suggest a berry drink recipe using any of blueberry, lingonberry, cloudberry, redcurrant, blackcurrant, water, and mineral water. The drink should emphasize: Data Expert 21%, Genius 0%, Fit 0%, Cute 79%. Power Mode: off. Stimulant Boost: on. Liquid base: water. Give exact grams of each ingredient for a 250g serving.",
+    "timestamp": "2026-08-29T18:34:21.921929+00:00",
+    "request_ordinal": 14,
+    "api_requests_made": 1,
+    "baseline_text": null,
+    "raw_response": null,
+    "parse_status": "CALL_FAILED",
+    "recipe": null,
+    "liquid_base": null,
+    "verification": {
+      "status": "REJECT",
+      "warnings": [],
+      "errors": [
+        "baseline LLM call failed: OpenRouter response had empty assistant text"
+      ]
+    }
+  }
+]
