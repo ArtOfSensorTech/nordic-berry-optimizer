@@ -1,5 +1,9 @@
 # Nordic Berry Optimizer
 
+**[▶ Launch the Interactive Demo](https://artofsensortech.github.io/nordic-berry-optimizer/)**
+
+Deterministic Nordic berry drink optimization with independent verification — built as an auditable AI-agent engineering workflow.
+
 ## Problem & Intended User
 
 This is a deterministic optimizer for a 250 g Nordic berry drink. A user selects nutrient emphasis through Data Expert, Genius, Fit, and Cute sliders, then chooses a liquid base and optional toggles. The intended user is exploring a constrained recipe target profile, not seeking diagnosis or care.
