@@ -120,3 +120,64 @@ during these reviews rather than on stylistic preferences.
 Pre-implementation design complete.
 
 The mathematical specification is frozen before implementation.
+
+## TASK 2.1 — Pre-evaluation corrective pass
+
+The TASK 2 implementation was subjected to a read-only audit before the
+frozen evaluation.
+
+The audit identified four material implementation issues:
+
+1. Non-finite numeric inputs such as NaN and infinity were not explicitly
+   rejected.
+2. Verifier nutrient accounting was not sufficiently independent from
+   the optimizer's accounting path.
+3. Baseline liquid-base selection was not faithfully preserved during
+   parsing and scoring.
+4. The baseline runner required an injected LLM callable, but the actual
+   provider/model configuration remained an evaluation-time decision.
+
+### Corrections
+
+The implementation was updated to:
+
+- reject non-finite slider and ingredient values;
+- independently recompute nutrient and caffeine values in the verifier;
+- preserve and validate the baseline's declared water/mineral-water
+  selection;
+- explicitly classify malformed or ambiguous baseline output;
+- keep the baseline LLM interface provider-agnostic;
+- improve tests covering the corrected behavior;
+- improve README documentation for reproducibility, safety,
+  improvement history, failure modes, and agent trajectories.
+
+### Verification
+
+The corrected implementation passed:
+
+- 26 unit/integration tests
+- `git diff --check`
+- credential/secret scan
+
+The locked SPEC.md remained byte-for-byte unchanged.
+
+No frozen evaluation was performed during this corrective pass, and no
+evaluation artifacts were generated.
+
+### Checkpoint
+
+TASK 2.1 was committed as:
+
+`ae0bbd4 fix: harden verification and baseline evaluation`
+
+The Git working tree was clean after the commit.
+
+## Pre-evaluation status
+
+The implementation is now frozen for the evaluation phase.
+
+Remaining evaluation configuration:
+- select and document the actual LLM/provider/model used for the
+  baseline;
+- run the frozen evaluation set;
+- collect baseline vs. agent results without changing the frozen cases.
