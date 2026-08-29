@@ -36,7 +36,17 @@ made after observing this output. No frozen case or result had been observed.
 
 ## Evaluation Method
 
-`tests/frozen_eval.py` contains the 14 frozen §11 cases unchanged. Both agent and baseline recipes use deterministic verification and per-dimension NNTD reporting. Baseline output records parse/call failures explicitly. Frozen evaluation artifacts are intentionally not claimed here until an explicitly identified LLM callable is supplied and the evaluation is run.
+`tests/frozen_eval.py` contains the 14 frozen §11 cases unchanged. Both agent and baseline recipes use deterministic verification and per-dimension NNTD reporting. Baseline output records parse/call failures explicitly. The official run completed all 14 cases with one baseline attempt per case; its committed artifacts are `evaluation/baseline_results.json`, `evaluation/agent_results.json`, `evaluation/comparison.csv`, and `evaluation/run_status.json`.
+
+### Official frozen run #2
+
+The deterministic agent produced PASS=11, WARN=1, and REJECT=2, with 12 of 14 outputs scorable. The baseline produced parse PASS=5, parse INVALID=8, and CALL_FAILED=1; verifier results were PASS=1, WARN=0, and REJECT=13, with 1 of 14 attempts scorable. The baseline figure is a result of the locked parser/verifier pipeline, not a pure model-capability score: some raw responses were internally mass-balanced or named a supported liquid, but the deliberately simple free-text parser did not preserve their structure.
+
+In cases 1, 2, 9, and 10, the raw baseline responses visibly stated ingredient quantities totaling 250 g. The locked parser omitted berry quantities, and cases 1 and 9 also double-counted repeated water quantities; deterministic verification then rejected the resulting structured recipes for mass balance. The raw responses themselves satisfied the 250 g mass requirement; the structured recipes passed to verification did not, because of limitations in the locked free-text parser. Other baseline failures were liquid-base parsing failures: cases 3, 7, and 11 explicitly used both bases, case 5 had no usable explicit base, and cases 4, 8, 12, and 13 stated one supported base in formatting the locked parser did not recognize. Case 14 had an empty assistant response recorded as CALL_FAILED. No repair, retry, or reinterpretation was performed.
+
+Only case 6 was scorable for both systems. Its agent NNTD was approximately 0.176 versus 0.288 for the baseline. This is paired n=1 and does not establish general NNTD superiority. Case 6 used Boost=off and the recorded agent recipe contained 4.2 g guarana; this is legal under rev8, has no direct Boost-off caffeine objective, and can affect NNTD indirectly through the fixed 250 g mass allocation. It was classified as SEARCH_ARTIFACT_WITHIN_SPEC, with no implementation defect found.
+
+Cases 11 and 12 matched their pre-declared expectations in the pre-implementation SPEC: Cute=100 plus Stimulant Boost was expected to REJECT, while Cute=100 plus mineral water was expected to WARN rather than reject. Those predictions were already present in `2d3128c` (`docs: lock SPEC v1.0-rev5 after second pre-implementation review`), before `61a3b7a` (`feat: implement Nordic Berry Optimizer`) and before the frozen evaluation.
 
 ## Reproduction Guide
 
@@ -81,6 +91,12 @@ The deterministic coordinate search is bounded and reproducible but is not a for
 ## Hot Take / Engineering Insight
 
 For an agentic optimization workflow, a separate verifier is more valuable than a persuasive recipe narrative: generation can propose, but only explicit data-backed checks should decide whether a constrained recipe is valid.
+
+The interface between free-text LLM output and structured verification is itself a failure surface. Several raw baseline recipes were internally mass-balanced, yet the deliberately simple locked parser failed to preserve their ingredient quantities correctly. Verification can only be as reliable as the structured representation it receives. The agent path passes the optimizer's structured recipe dictionary directly to deterministic verification, without an equivalent prose-to-regex reconstruction step; this is an implementation distinction, not proof that structured-output agents are universally superior.
+
+## Future Work
+
+Future work includes more robust structured-output handling for the baseline. The v1 parser was not modified after frozen results were observed, preserving evaluation integrity. The deterministic optimizer is reproducible but provides no formal global-optimum guarantee. A future demo could also add an inverse “Analyze my recipe” mode that accepts ingredient quantities and estimates the resulting Data Expert, Genius, Fit, and Cute profile; that is outside frozen v1 semantics.
 
 ## Safety / Responsible Use
 

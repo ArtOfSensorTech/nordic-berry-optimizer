@@ -274,3 +274,42 @@ adaptation, or evaluation-protocol change followed the output. No frozen case
 was run and no frozen result was observed. The smoke validated the live
 pre-evaluation pipeline while preserving malformed or contract-violating
 baseline output for rejection.
+
+### TASK 4.2C/4.4/4.4B — Post-run read-only audits
+
+After run #2 completed, read-only audits examined the three non-PASS agent
+cases and the baseline failure attribution. Cases 11 and 13 were intentionally
+rejected by the locked Cute≥80 plus Stimulant Boost input rule; case 12 was the
+pre-declared Cute=100 plus mineral-water WARN case. The agent path passes a
+native structured recipe dictionary from the optimizer directly to the
+verifier. The case-6 Boost-off 4.2 g guarana observation is legal under rev8:
+guarana remains a search variable, has no direct Boost-off caffeine objective,
+and can change nutrient totals indirectly through fixed-mass liquid
+allocation. It was classified as SEARCH_ARTIFACT_WITHIN_SPEC, not an
+implementation defect.
+
+The baseline raw-response audit found that cases 1, 2, 9, and 10 visibly
+stated 250 g ingredient totals, while the locked parser omitted berry amounts
+and double-counted repeated water mentions in cases 1 and 9. Verification
+correctly rejected the resulting structured recipes for mass balance. The
+other INVALID cases comprised three responses explicitly using both liquid
+bases (3, 7, 11), one with no usable explicit base (5), and four that stated
+one supported base in formatting the locked parser did not recognize (4, 8,
+12, 13). Case 14 was an empty assistant response recorded as CALL_FAILED.
+These audits attributed failures without changing results,
+parser behavior, scoring, or protocol.
+
+The audits were deliberately read-only: no frozen result, raw response, or
+parser behavior was changed after observation. The committed run remains the
+authoritative record, and later interpretation is kept separate from frozen
+evaluation data.
+
+### Official frozen run #2 result
+
+Run #2 completed all 14 cases with exactly one baseline attempt per case. The
+agent outcomes were PASS=11, WARN=1, REJECT=2, with 12 scorable cases. The
+baseline outcomes were parse PASS=5, parse INVALID=8, CALL_FAILED=1, verifier
+PASS=1, WARN=0, REJECT=13, with 1 scorable case. Only case 6 was paired and
+scorable: agent NNTD ≈0.176 and baseline NNTD ≈0.288 (paired n=1, not a
+general superiority claim). The artifacts were committed unchanged in
+`eac8463`.

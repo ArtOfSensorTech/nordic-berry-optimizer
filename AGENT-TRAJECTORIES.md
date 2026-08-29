@@ -427,14 +427,30 @@ changed.
 
 ## Final submission update — placeholder
 
-To be completed after TASK 3 and final submission preparation.
+### TASK 4.2–4.5 — Frozen evaluation and read-only result audits
 
-Expected additions:
+The official rev8 run completed 14/14 cases with one baseline attempt per
+case. The results were committed as `eac8463 eval: lock official frozen run 2
+results`. Later audits were kept strictly separate from the locked data: Codex
+did not rerun optimization, parsing, verification, inference, or evaluation,
+and did not modify any artifact.
 
-- representative final trajectories;
-- final Improvement Changelog;
-- measured baseline-vs-agent results;
-- main failure mode;
-- engineering hot take;
-- reproducibility instructions;
-- final evidence references.
+The first post-run audit traced the agent's non-PASS cases to the locked
+boundary rules: cases 11 and 13 are Cute/Stimulant hard rejects, while case 12
+is the explicitly allowed mineral-water warning. A subsequent guarana audit
+found that Boost-off guarana is legal in the locked search space and can alter
+liquid allocation; the case-6 observation was classified as
+SEARCH_ARTIFACT_WITHIN_SPEC rather than treated as a defect.
+
+The baseline audit then compared raw responses with their committed parsed
+records. In cases 1, 2, 9, and 10, raw quantities visibly totaled 250 g, but
+the narrow parser omitted berry quantities and double-counted repeated water
+mentions in cases 1 and 9. Other baseline failures involved liquid-base
+parsing, and case 14 had empty assistant content and was recorded CALL_FAILED.
+Codex preserved the distinction between raw model output and the structured
+pipeline outcome, did not repair or reinterpret responses, and did not change
+the parser or frozen methodology.
+
+This trajectory documents interpretation after the run, not a feedback loop
+into the evaluation. Frozen cases, prompts, artifacts, and scoring remain the
+authoritative evidence.
