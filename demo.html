@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nordic Berry Optimizer</title>
+  <style>
+    :root {
+      --bg: #10131c;
+      --panel: #181c28;
+      --panel-2: #202536;
+      --line: #30384c;
+      --text: #f4f5fb;
+      --muted: #9da6bb;
+      --berry: #dd6a9d;
+      --berry-2: #9c7bea;
+      --mint: #64d6b2;
+      --gold: #f0c46d;
+      --danger: #f17e8e;
+      --shadow: 0 22px 70px rgba(0,0,0,.28);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background: radial-gradient(circle at 82% -10%, #302344 0, transparent 36%),
+                  radial-gradient(circle at 5% 15%, #182e3a 0, transparent 30%), var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input { font: inherit; }
+    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 42px 0 56px; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 30px; margin-bottom: 30px; }
+    .hero-copy { min-width: 0; }
+    .hero-side { display: flex; flex-direction: column; align-items: end; gap: 14px; flex: 0 1 470px; }
+    .hero-art { width: min(100%, 470px); height: auto; display: block; overflow: visible; }
+    .hero-art .glass-line { fill: rgba(173, 218, 224, .055); stroke: #8fbcc8; stroke-width: 1.5; opacity: .52; }
+    .hero-art .glass-water { fill: rgba(111, 197, 205, .14); opacity: .7; }
+    .hero-art .glass-shine { stroke: rgba(225, 250, 250, .7); stroke-width: 2; stroke-linecap: round; opacity: .42; }
+    .hero-art .stem { stroke: #8fbcc8; stroke-width: 1.4; opacity: .42; }
+    .hero-art .berry-shadow { fill: #070911; opacity: .38; }
+    .hero-art .blueberry { fill: #527be0; stroke: #9ab7ff; stroke-width: 1.3; }
+    .hero-art .blueberry-deep { fill: #263c9b; }
+    .hero-art .lingonberry { fill: #c94e68; stroke: #ff9cac; stroke-width: 1.1; }
+    .hero-art .cloudberry { fill: #e5a84d; stroke: #ffe1a0; stroke-width: 1.5; }
+    .hero-art .redcurrant { fill: #d85c6e; stroke: #ffc2c9; stroke-width: 1; }
+    .hero-art .blackcurrant { fill: #514477; stroke: #b49de2; stroke-width: 1.2; }
+    .hero-art .berry-highlight { fill: rgba(255,255,255,.55); }
+    .hero-art .twig { fill: none; stroke: #78936f; stroke-width: 1.5; stroke-linecap: round; opacity: .8; }
+    .hero-art .leaf { fill: #456e67; opacity: .82; }
+    .eyebrow { color: var(--mint); text-transform: uppercase; letter-spacing: .16em; font-size: 11px; font-weight: 800; }
+    h1 { margin: 8px 0 9px; font-size: clamp(32px, 5vw, 58px); line-height: .98; letter-spacing: -.055em; }
+    .lede { max-width: 650px; color: var(--muted); line-height: 1.6; margin: 0; }
+    .badge { border: 1px solid #3b4760; border-radius: 999px; color: #cbd3e6; padding: 9px 13px; white-space: nowrap; font-size: 12px; }
+    .grid { display: grid; grid-template-columns: minmax(300px, .82fr) minmax(420px, 1.18fr); gap: 18px; align-items: start; }
+    .card { background: linear-gradient(145deg, rgba(32,37,54,.96), rgba(20,24,35,.96)); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 22px; }
+    .card h2 { font-size: 15px; margin: 0 0 18px; letter-spacing: .02em; }
+    .card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 22px 0 12px; }
+    .slider { margin: 18px 0; }
+    .slider-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+    .slider-head label { font-weight: 700; font-size: 14px; }
+    .value { color: var(--berry); font-variant-numeric: tabular-nums; font-weight: 800; }
+    input[type=range] { width: 100%; accent-color: var(--berry); cursor: pointer; }
+    .switches { display: grid; gap: 10px; margin: 22px 0; }
+    .switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(255,255,255,.035); border: 1px solid #2b3347; padding: 12px 13px; border-radius: 13px; }
+    .switch span { font-size: 13px; color: #d8dced; }
+    .switch input { appearance: none; width: 42px; height: 23px; border-radius: 999px; background: #3a4256; position: relative; cursor: pointer; transition: .18s ease; }
+    .switch input::after { content: ""; position: absolute; width: 17px; height: 17px; left: 3px; top: 3px; border-radius: 50%; background: white; transition: .18s ease; }
+    .switch input:checked { background: linear-gradient(90deg, var(--berry-2), var(--berry)); }
+    .switch input:checked::after { transform: translateX(19px); }
+    .bases { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .base { border: 1px solid #384159; border-radius: 12px; padding: 12px; color: var(--muted); background: transparent; cursor: pointer; text-align: left; }
+    .base strong { display: block; color: var(--text); font-size: 13px; margin-bottom: 3px; }
+    .base.active { border-color: var(--berry); background: rgba(221,106,157,.11); }
+    .cta { border: 0; width: 100%; padding: 14px 18px; border-radius: 13px; color: white; background: linear-gradient(100deg, #b458aa, #806bd7); font-weight: 800; cursor: pointer; box-shadow: 0 9px 25px rgba(156,123,234,.23); }
+    .cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .process { display: flex; justify-content: space-between; gap: 7px; margin: 2px 0 19px; color: var(--muted); font-size: 10px; text-align: center; }
+    .process div { flex: 1; position: relative; padding-top: 23px; }
+    .process div::before { content: ""; position: absolute; top: 0; left: calc(50% - 6px); width: 12px; height: 12px; border: 2px solid var(--berry); border-radius: 50%; background: var(--panel); }
+    .process div:not(:last-child)::after { content: "→"; position: absolute; top: -1px; right: -8px; color: var(--berry); font-size: 17px; }
+    .status-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+    .status { border-radius: 999px; padding: 7px 11px; font-size: 11px; font-weight: 900; letter-spacing: .1em; }
+    .status.pass { color: #09291e; background: var(--mint); }
+    .status.warn { color: #342509; background: var(--gold); }
+    .status.reject { color: #350d18; background: var(--danger); }
+    .status.empty { color: var(--muted); background: #2a3142; }
+    .message { color: var(--muted); font-size: 12px; margin: 0; line-height: 1.45; }
+    .verifier-box { margin-top: 18px; padding: 14px; border: 1px solid #34405a; border-radius: 14px; background: rgba(8,11,18,.22); }
+    .verifier-title { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 9px; }
+    .verifier-title strong { font-size: 11px; letter-spacing: .14em; }
+    .verifier-title span { color: var(--muted); font-size: 11px; }
+    .checklist { display: grid; gap: 7px; }
+    .check { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 7px; font-size: 11px; }
+    .check-mark { color: var(--mint); font-size: 15px; font-weight: 900; text-align: center; }
+    .check.warn .check-mark { color: var(--gold); }
+    .check.fail .check-mark { color: var(--danger); }
+    .check-label { color: #d9deec; }
+    .check-detail { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+    .check.fail .check-detail { color: var(--danger); }
+    .check.warn .check-detail { color: var(--gold); }
+    .metric { display: flex; align-items: baseline; gap: 8px; }
+    .metric strong { font-size: 30px; letter-spacing: -.04em; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    .recipe-list { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 18px; }
+    .ingredient { display: flex; justify-content: space-between; gap: 8px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.07); font-size: 13px; }
+    .ingredient span:last-child { font-variant-numeric: tabular-nums; color: #f1c7dc; font-weight: 700; }
+    .composition { height: 16px; display: flex; overflow: hidden; border-radius: 999px; background: #2e3548; margin: 9px 0 7px; }
+    .composition i { display: block; height: 100%; min-width: 0; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; color: var(--muted); font-size: 10px; }
+    .legend b { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+    .nutrients { display: grid; gap: 11px; }
+    .nutrient-head { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; margin-bottom: 5px; }
+    .nutrient-head span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .bar { height: 7px; border-radius: 99px; background: #2c3447; overflow: hidden; position: relative; }
+    .bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--berry-2), var(--berry)); }
+    .target-line { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--gold); opacity: .9; }
+    .bar-key { display: flex; gap: 14px; color: var(--muted); font-size: 10px; margin-top: 11px; }
+    .bar-key b { display: inline-block; width: 8px; height: 8px; margin-right: 4px; border-radius: 2px; background: var(--berry); }
+    .bar-key b.target { background: var(--gold); }
+    .eval { margin-top: 18px; padding: 17px 19px; border-radius: 16px; border: 1px solid #3b3456; background: linear-gradient(120deg, rgba(112,75,133,.18), rgba(33,39,57,.35)); }
+    .eval h2 { margin-bottom: 8px; }
+    .eval p { color: var(--muted); font-size: 12px; line-height: 1.55; margin: 0; }
+    .eval strong { color: var(--text); }
+    .note { color: var(--muted); font-size: 11px; line-height: 1.5; margin-top: 20px; }
+    @media (max-width: 820px) { .shell { width: min(100% - 24px, 620px); padding-top: 26px; } header { display: block; } .badge { display: inline-block; margin-top: 17px; } .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 460px) { .recipe-list { grid-template-columns: 1fr; } .process { font-size: 8px; } .process div:not(:last-child)::after { right: -5px; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="hero-copy">
+        <div class="eyebrow">Nordic Berry Optimizer · v1</div>
+        <h1>Shape your berry<br><span style="color:var(--berry)">target profile.</span></h1>
+        <p class="lede">A transparent, deterministic recipe search for a 250 g berry drink. Your sliders describe nutrient emphasis—not a health or cognitive promise.</p>
+      </div>
+      <div class="hero-side">
+        <svg class="hero-art" viewBox="0 0 520 152" role="img" aria-label="Illustrated Nordic berries framed by two glasses of clear water" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="glassGlow" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c9f4f1" stop-opacity=".12"/><stop offset="1" stop-color="#5cb4c2" stop-opacity=".03"/></linearGradient>
+            <radialGradient id="blueGlow" cx="32%" cy="25%"><stop offset="0" stop-color="#b7d0ff"/><stop offset=".2" stop-color="#668eec"/><stop offset="1" stop-color="#263c9b"/></radialGradient>
+            <radialGradient id="goldGlow" cx="30%" cy="22%"><stop offset="0" stop-color="#fff0b0"/><stop offset=".24" stop-color="#f7c86d"/><stop offset="1" stop-color="#c7792f"/></radialGradient>
+            <radialGradient id="purpleGlow" cx="30%" cy="22%"><stop offset="0" stop-color="#c4b4ee"/><stop offset=".25" stop-color="#725b9a"/><stop offset="1" stop-color="#302749"/></radialGradient>
+          </defs>
+          <!-- quiet glass silhouettes -->
+          <g transform="translate(12 16)">
+            <path class="glass-line" fill="url(#glassGlow)" d="M4 4h49l-6 83c-.4 5-4.5 9-9.5 9h-18c-5 0-9.1-4-9.5-9z"/>
+            <path class="glass-water" d="M7 54h43l-3 33c-.4 5-3.7 8-8.5 8h-18c-4.8 0-8.1-3-8.5-8z"/>
+            <path class="glass-shine" d="M13 16l-3 51M19 12l-2 29"/><path class="stem" d="M28 96v35M12 132h33"/>
+            <ellipse cx="28" cy="4" rx="24.5" ry="4" fill="none" stroke="#9bcbd0" stroke-width="1.5" opacity=".5"/>
+          </g>
+          <g transform="translate(458 16)">
+            <path class="glass-line" fill="url(#glassGlow)" d="M4 4h49l-6 83c-.4 5-4.5 9-9.5 9h-18c-5 0-9.1-4-9.5-9z"/>
+            <path class="glass-water" d="M7 54h43l-3 33c-.4 5-3.7 8-8.5 8h-18c-4.8 0-8.1-3-8.5-8z"/>
+            <path class="glass-shine" d="M13 16l-3 51M19 12l-2 29"/><path class="stem" d="M28 96v35M12 132h33"/>
+            <ellipse cx="28" cy="4" rx="24.5" ry="4" fill="none" stroke="#9bcbd0" stroke-width="1.5" opacity=".5"/>
+          </g>
+          <!-- berry composition -->
+          <ellipse class="berry-shadow" cx="266" cy="132" rx="135" ry="8"/>
+          <path class="twig" d="M139 105c33-25 44-37 60-61M371 108c-31-26-37-42-51-68M205 83c28-14 54-24 72-47M309 83c-11-16-19-27-23-45"/>
+          <path class="leaf" d="M179 53c-14-17-29-14-39-7 13 7 25 10 39 7zM358 55c14-15 27-12 35-4-13 7-24 9-35 4zM217 38c-4-15 4-24 13-28 1 11-3 21-13 28z"/>
+          <!-- blueberry -->
+          <g transform="translate(155 70)">
+            <circle class="blueberry-deep" cx="0" cy="0" r="22"/><circle fill="url(#blueGlow)" cx="0" cy="-2" r="20"/>
+            <path d="M-7-16l7 5 7-5-2 9h-10z" fill="#8faaff" opacity=".72"/><circle class="berry-highlight" cx="-7" cy="-9" r="3"/>
+          </g>
+          <!-- lingonberry cluster -->
+          <g transform="translate(214 82)"><path class="twig" d="M0-28v28M0-20l-15-10M0-13l14-14"/><circle class="lingonberry" cx="-15" cy="-31" r="8"/><circle class="lingonberry" cx="14" cy="-28" r="8"/><circle class="lingonberry" cx="0" cy="-4" r="9"/><circle class="berry-highlight" cx="-18" cy="-34" r="2"/><circle class="berry-highlight" cx="-3" cy="-7" r="2"/></g>
+          <!-- signature cloudberry -->
+          <g transform="translate(271 77)">
+            <circle class="cloudberry" fill="url(#goldGlow)" cx="0" cy="0" r="18"/><circle class="cloudberry" fill="url(#goldGlow)" cx="15" cy="-8" r="18"/><circle class="cloudberry" fill="url(#goldGlow)" cx="-15" cy="-8" r="18"/><circle class="cloudberry" fill="url(#goldGlow)" cx="0" cy="-17" r="18"/><circle class="cloudberry" fill="url(#goldGlow)" cx="0" cy="-8" r="18"/>
+            <circle class="berry-highlight" cx="-7" cy="-17" r="3"/><path d="M-5-31c5-12 14-15 22-13-4 7-11 12-22 13z" fill="#73916d"/>
+          </g>
+          <!-- redcurrant cluster -->
+          <g transform="translate(339 82)"><path class="twig" d="M0-31v31M0-22l-15-12M0-17l16-13M0-11l-11-12"/><circle class="redcurrant" cx="-15" cy="-34" r="7"/><circle class="redcurrant" cx="16" cy="-31" r="7"/><circle class="redcurrant" cx="-11" cy="-12" r="7"/><circle class="redcurrant" cx="11" cy="-10" r="7"/><circle class="redcurrant" cx="0" cy="4" r="7"/><circle class="berry-highlight" cx="-17" cy="-36" r="2"/><circle class="berry-highlight" cx="9" cy="-12" r="2"/></g>
+          <!-- blackcurrant -->
+          <g transform="translate(400 70)"><circle class="blackcurrant" fill="url(#purpleGlow)" cx="0" cy="0" r="21"/><circle class="blackcurrant" fill="url(#purpleGlow)" cx="16" cy="-7" r="18"/><circle class="blackcurrant" fill="url(#purpleGlow)" cx="-14" cy="-7" r="18"/><path d="M-7-18l7 5 7-5-2 8h-10z" fill="#b6a2ed" opacity=".55"/><circle class="berry-highlight" cx="-9" cy="-13" r="3"/></g>
+        </svg>
+        <div class="badge">LOCAL · NO API REQUIRED</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Preferences</h2>
+        <div id="sliders"></div>
+        <div class="switches">
+          <label class="switch"><span>Power Mode <small>(Fit emphasis)</small></span><input id="power" type="checkbox"></label>
+          <label class="switch"><span>Stimulant Boost <small>(guarana)</small></span><input id="boost" type="checkbox"></label>
+        </div>
+        <h3>Liquid base</h3>
+        <div class="bases">
+          <button class="base active" data-base="water"><strong>Water</strong>neutral base</button>
+          <button class="base" data-base="mineral_water"><strong>Mineral water</strong>electrolyte base</button>
+        </div>
+        <button class="cta" id="optimize" style="margin-top:19px">Optimize drink</button>
+        <p class="note">The optimizer searches berries and guarana together, derives the liquid from mass balance, then checks the result independently.</p>
+      </section>
+
+      <section>
+        <div class="process"><div>Preferences</div><div>Target</div><div>Optimizer</div><div>Independent<br>verifier</div><div>Recipe</div></div>
+        <div class="card" id="result"></div>
+        <div class="eval">
+          <h2>Frozen evaluation snapshot</h2>
+          <p>Committed run, shown for context only: <strong>agent 12/14 scorable</strong> · baseline <strong>1/14</strong> under the locked parser/verifier pipeline. Sole paired case: agent NNTD <strong>0.176</strong> vs baseline <strong>0.288</strong> (paired n=1). This does not establish general model superiority.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    "use strict";
+    const BERRIES = ["blueberry", "lingonberry", "cloudberry", "redcurrant", "blackcurrant"];
+    const DIMENSIONS = ["vitc_mg", "k_mg", "mg_mg", "ca_mg", "na_mg", "sugar_g", "antioxidant_score"];
+    const LABELS = {vitc_mg:"VitC", k_mg:"K", mg_mg:"Mg", ca_mg:"Ca", na_mg:"Na", sugar_g:"Sugar", antioxidant_score:"Antioxidant"};
+    const SCALES = {vitc_mg:150, k_mg:350, mg_mg:35, ca_mg:60, na_mg:100, sugar_g:25, antioxidant_score:1};
+    const WEIGHTS = {
+      data:{vitc_mg:.3,k_mg:.9,mg_mg:.9,ca_mg:.2,sugar_g:.1,antioxidant_score:.4},
+      genius:{vitc_mg:.6,k_mg:.3,mg_mg:.3,ca_mg:.2,sugar_g:.1,antioxidant_score:.9},
+      fit:{vitc_mg:.3,k_mg:.9,mg_mg:.9,ca_mg:.2,sugar_g:.6,antioxidant_score:.2},
+      cute:{vitc_mg:.4,k_mg:.1,mg_mg:.1,ca_mg:.1,sugar_g:.8,antioxidant_score:.2}
+    };
+    const NUTRIENTS = {
+      blueberry:{kcal:64.5,sugar_g:8.39,fiber_g:3.3,vitc_mg:7.16,vite_mg:1.85,vitk_ug:9,k_mg:110,ca_mg:19,mg_mg:9,na_mg:2},
+      lingonberry:{kcal:48.8,sugar_g:8.17,fiber_g:2.6,vitc_mg:10.7,vite_mg:1.53,vitk_ug:9,k_mg:80,ca_mg:22,mg_mg:9,na_mg:2},
+      cloudberry:{kcal:55,sugar_g:5.81,fiber_g:6.3,vitc_mg:61.6,vite_mg:2.95,vitk_ug:9,k_mg:170,ca_mg:16,mg_mg:29,na_mg:2},
+      redcurrant:{kcal:56.6,sugar_g:7.5,fiber_g:5,vitc_mg:30,vite_mg:.82,vitk_ug:11,k_mg:310,ca_mg:40,mg_mg:14,na_mg:.6},
+      blackcurrant:{kcal:74.1,sugar_g:8.58,fiber_g:5.8,vitc_mg:128,vite_mg:2.23,vitk_ug:30,k_mg:340,ca_mg:72,mg_mg:24,na_mg:2},
+      mineral_water:{kcal:0,sugar_g:0,fiber_g:0,vitc_mg:0,vite_mg:0,vitk_ug:0,k_mg:13.5,ca_mg:4.7,mg_mg:7.23,na_mg:45},
+      water:{kcal:0,sugar_g:0,fiber_g:0,vitc_mg:0,vite_mg:0,vitk_ug:0,k_mg:0,ca_mg:0,mg_mg:0,na_mg:0}
+    };
+    const state = {data:37, genius:61, fit:22, cute:14, power:false, boost:false, base:"water"};
+    const sliderDefs = [["data","Data Expert"],["genius","Genius"],["fit","Fit"],["cute","Cute"]];
+    const $ = (q) => document.querySelector(q);
+    const fmt = (n, digits=2) => Number(n).toFixed(digits).replace(/\.00$/, "");
+    const sum = (xs) => xs.reduce((a,b)=>a+b,0);
+
+    function setupUI() {
+      $("#sliders").innerHTML = sliderDefs.map(([key,label]) => `<div class="slider"><div class="slider-head"><label for="${key}">${label}</label><span class="value" id="${key}-value">${state[key]}%</span></div><input id="${key}" type="range" min="0" max="100" value="${state[key]}"></div>`).join("");
+      sliderDefs.forEach(([key]) => $("#"+key).addEventListener("input", e => { state[key]=Number(e.target.value); $("#"+key+"-value").textContent=state[key]+"%"; }));
+      $("#power").addEventListener("change", e => state.power=e.target.checked);
+      $("#boost").addEventListener("change", e => state.boost=e.target.checked);
+      document.querySelectorAll(".base").forEach(btn => btn.addEventListener("click", () => { state.base=btn.dataset.base; document.querySelectorAll(".base").forEach(x=>x.classList.toggle("active",x===btn)); }));
+      $("#optimize").addEventListener("click", renderResult);
+      renderResult();
+    }
+
+    function validate(sliders, boost) {
+      const values = Object.values(sliders).map(Number);
+      if (values.some(v=>!Number.isFinite(v)) || values.some(v=>v<0)) throw new Error("slider values must be finite and non-negative");
+      if (sum(values)===0) throw new Error("select at least one goal");
+      if (boost && sliders.cute >= 80) throw new Error("Stimulant Boost is not allowed when Cute is 80 or higher");
+    }
+    function buildTarget(sliders, power, boost, base) {
+      validate(sliders, boost);
+      const total=sum(Object.values(sliders)), normalized={};
+      Object.keys(sliders).forEach(k=>normalized[k]=sliders[k]/total);
+      const target={};
+      ["vitc_mg","k_mg","mg_mg","ca_mg","sugar_g","antioxidant_score"].forEach(d=>target[d]=SCALES[d]*sum(Object.keys(sliders).map(k=>normalized[k]*WEIGHTS[k][d])));
+      target.na_mg=base==="water"?0:25;
+      const warnings=[];
+      if (power) { if (sliders.fit < 50) warnings.push("Power Mode ignored because Fit is below 50"); else target.sugar_g*=1.4; }
+      if (base==="mineral_water" && sliders.cute>=80) warnings.push("mineral_water selected with Cute >= 80; sodium contribution noted");
+      return {target,warnings};
+    }
+    function minmax(field) {
+      const vals=BERRIES.map(k=>NUTRIENTS[k][field]), lo=Math.min(...vals), hi=Math.max(...vals), out={};
+      BERRIES.forEach(k=>out[k]=(NUTRIENTS[k][field]-lo)/(hi-lo)); return out;
+    }
+    const vitc=minmax("vitc_mg"), vite=minmax("vite_mg"), vitk=minmax("vitk_ug");
+    const ANTIOX={}; BERRIES.forEach(k=>ANTIOX[k]=(vitc[k]+vite[k]+vitk[k])/3);
+    function liquidMass(recipe) { return 250-sum(BERRIES.map(k=>recipe[k]||0))-(recipe.guarana_g||0); }
+    function nutrientTotals(recipe, base) {
+      const liquid=recipe.liquid_g ?? liquidMass(recipe), amounts={}; BERRIES.forEach(k=>amounts[k]=recipe[k]||0); amounts[base]=liquid;
+      const fields={vitc_mg:"vitc_mg",k_mg:"k_mg",mg_mg:"mg_mg",ca_mg:"ca_mg",na_mg:"na_mg",sugar_g:"sugar_g"}, totals={};
+      Object.keys(fields).forEach(d=>totals[d]=Object.keys(amounts).reduce((v,k)=>v+amounts[k]*NUTRIENTS[k][fields[d]]/100,0));
+      const berryMass=sum(BERRIES.map(k=>amounts[k])); totals.antioxidant_score=berryMass?sum(BERRIES.map(k=>amounts[k]*ANTIOX[k]))/berryMass:0;
+      totals.caffeine_mg=(recipe.guarana_g||0)*47; return totals;
+    }
+    function nntd(totals,target) { const per={}; DIMENSIONS.forEach(d=>per[d]=Math.abs(totals[d]-target[d])/SCALES[d]); return {per_dimension:per,nntd:sum(Object.values(per))/7}; }
+    function candidate(recipe,target,base) { const proposed={...recipe,liquid_g:liquidMass(recipe)}, totals=nutrientTotals(proposed,base); return {recipe:proposed,totals,metric:nntd(totals,target)}; }
+    function feasible(recipe,boost) { const berries=BERRIES.map(k=>recipe[k]); if (berries.some(v=>v<0||v>80) || recipe.guarana_g<0 || recipe.guarana_g>4.2 || liquidMass(recipe)<40-1e-12) return false; const caffeine=recipe.guarana_g*47; return !boost || (caffeine>=50-1e-12 && caffeine<=200+1e-12); }
+    function better(a,b,boost) {
+      if (a.metric.nntd < b.metric.nntd-1e-9) return true;
+      if (Math.abs(a.metric.nntd-b.metric.nntd)>1e-9) return false;
+      if (boost) { const ag=Math.abs(a.totals.caffeine_mg-100), bg=Math.abs(b.totals.caffeine_mg-100); if (ag<bg-1e-12) return true; if (Math.abs(ag-bg)>1e-12) return false; }
+      for (const k of [...BERRIES,"guarana_g"]) { const av=a.recipe[k],bv=b.recipe[k]; if (av!==bv) return av<bv; }
+      return false;
+    }
+    function seeds(boost) {
+      const gs=boost?[100/47]:[0], out=[];
+      gs.forEach(g=>{ const base=Object.fromEntries([...BERRIES.map(k=>[k,0]),["guarana_g",g]]); out.push(base); BERRIES.forEach(k=>{const s={...base,[k]:80};out.push(s);}); const equal={...base}; BERRIES.forEach(k=>equal[k]=(250-40-g)/5);out.push(equal); }); return out;
+    }
+    function optimize(sliders,power,boost,base) {
+      const {target,warnings}=buildTarget(sliders,power,boost,base); let best=null;
+      for (const seed of seeds(boost)) { if(!feasible(seed,boost))continue; let current=candidate(seed,target,base);
+        for(const step of [20,5,1,.1,.01]) { let improved=true; while(improved) { improved=false;
+          for(const name of [...BERRIES,"guarana_g"]) for(const direction of [-1,1]) { const trialRecipe={...current.recipe}; delete trialRecipe.liquid_g; trialRecipe[name]+=direction*step; if(!feasible(trialRecipe,boost))continue; const trial=candidate(trialRecipe,target,base); if(better(trial,current,boost)){current=trial;improved=true;} }
+        }} if(!best||better(current,best,boost))best=current;
+      }
+      if(!best) throw new Error("no feasible recipe exists for the requested constraints"); best.target=target; best.warnings=warnings; return best;
+    }
+    function maximum(d,base) { if(d==="antioxidant_score")return Math.max(...BERRIES.map(k=>ANTIOX[k])); let capacity=210,total=40*NUTRIENTS[base][d]/100; const values=BERRIES.map(k=>NUTRIENTS[k][d]).sort((a,b)=>b-a); for(const value of values){const amount=Math.min(80,capacity);total+=amount*value/100;capacity-=amount;if(capacity<=0)break;} return total; }
+    function verify(recipe,sliders,power,boost,base) {
+      const result={status:"PASS",warnings:[],errors:[],invalid_for_boost:false}; let target,targetWarnings;
+      try { ({target,warnings:targetWarnings}=buildTarget(sliders,power,boost,base)); } catch(e) { return {status:"REJECT",warnings:[],errors:[e.message]}; }
+      result.warnings.push(...targetWarnings); const normalized={}; [...BERRIES,"guarana_g"].forEach(k=>normalized[k]=Number(recipe[k]||0)); const declared=Number(recipe.liquid_g ?? liquidMass(normalized));
+      if(Object.values(normalized).some(v=>!Number.isFinite(v))||!Number.isFinite(declared))return reject(result,"ingredient amounts must be finite numeric values");
+      if(Object.values(normalized).some(v=>v<0))return reject(result,"ingredient amounts must be non-negative");
+      if(BERRIES.some(k=>normalized[k]>80+1e-9))return reject(result,"berry amount exceeds 80 g bound");
+      if(normalized.guarana_g>4.2+1e-9)return reject(result,"guarana amount exceeds 4.2 g bound");
+      const derived=liquidMass(normalized); if(Math.abs(sum(Object.values(normalized))+declared-250)>1e-9)return reject(result,"mass balance failed");
+      if(Math.abs(declared-derived)>1e-9)return reject(result,"liquid_g must equal derived mass-balance liquid");
+      if(declared<40-1e-9)return reject(result,"liquid below 40 g: optimizer constraint violation");
+      const totals=nutrientTotals({...normalized,liquid_g:declared},base); result.totals=totals; result.target=target; result.metric=nntd(totals,target);
+      if(boost){result.caffeine_achieved_mg=totals.caffeine_mg;result.caffeine_in_range=totals.caffeine_mg>=50&&totals.caffeine_mg<=200;if(totals.caffeine_mg>200+1e-9)return reject(result,"caffeine exceeds 200 mg hard safety maximum");if(totals.caffeine_mg<50-1e-9){result.status="WARN";result.invalid_for_boost=true;result.warnings.push("stimulant boost requested but negligible caffeine achieved");}}
+      if(sliders.cute>=80&&base==="mineral_water"){result.warnings.push("mineral_water selected with Cute >= 80; sodium contribution noted");if(result.status==="PASS")result.status="WARN";}
+      result.unreachable_dimensions=["vitc_mg","k_mg","mg_mg","ca_mg","sugar_g","antioxidant_score"].filter(d=>target[d]>maximum(d,base)+1e-12); return result;
+    }
+    function reject(result,message){result.status="REJECT";result.errors.push(message);return result;}
+    function run(sliders,power,boost,base){ let optimized; try{optimized=optimize(sliders,power,boost,base);}catch(e){return {recipe:null,verification:{status:"REJECT",warnings:[],errors:[e.message]},target:null};} return {recipe:optimized.recipe,verification:verify(optimized.recipe,sliders,power,boost,base),target:optimized.target}; }
+    function renderResult(){
+      const sliders={data:state.data,genius:state.genius,fit:state.fit,cute:state.cute}, out=run(sliders,state.power,state.boost,state.base), v=out.verification, recipe=out.recipe, status=v.status.toLowerCase();
+      const reason=v.errors.length?v.errors.join(" · "):v.warnings.length?v.warnings.join(" · "):"All hard constraints satisfied.";
+      let html=`<div class="status-row"><div><div class="eyebrow">Verified recipe</div><h2 style="margin:7px 0 0">Optimized berry drink</h2></div><span class="status ${status}">${v.status}</span></div><p class="message">${reason}</p>`;
+      html+=verifierPanel(v,recipe,sliders,state.power,state.boost,state.base);
+      if(!recipe){html+=`<h3>Verifier message</h3><p class="message">No recipe was produced because the selected input is infeasible under the locked v1 rules.</p>`;$("#result").innerHTML=html;return;}
+      html+=`<div class="metric" style="margin-top:17px"><strong>${v.metric?nntd(v.totals,v.target).nntd.toFixed(3):"—"}</strong><span>NNTD · lower is closer to target</span></div>`;
+      html+=`<h3>Composition · ${fmt(sum(BERRIES.map(k=>recipe[k]))+(recipe.guarana_g||0)+recipe.liquid_g,2)} g total</h3><div class="composition">${BERRIES.map((k,i)=>`<i style="width:${recipe[k]/250*100}%;background:${["#6d87e8","#9b76d8","#e5b25f","#d56b83","#a65090"][i]}"></i>`).join("")}<i style="width:${(recipe.guarana_g||0)/250*100}%;background:#f0c46d"></i><i style="width:${recipe.liquid_g/250*100}%;background:#5fc3b4"></i></div><div class="legend"><span><b style="background:#5fc3b4"></b>${state.base.replace("_"," ")}</span><span><b style="background:#f0c46d"></b>guarana</span><span><b style="background:#a978d5"></b>berries</span></div>`;
+      html+=`<h3>Ingredients</h3><div class="recipe-list">${BERRIES.map(k=>`<div class="ingredient"><span>${k[0].toUpperCase()+k.slice(1)}</span><span>${fmt(recipe[k])} g</span></div>`).join("")}<div class="ingredient"><span>Guarana powder</span><span>${fmt(recipe.guarana_g||0)} g</span></div><div class="ingredient"><span>${state.base.replace("_"," ")}</span><span>${fmt(recipe.liquid_g)} g</span></div></div>`;
+      html+=`<div style="display:flex;justify-content:space-between;margin-top:15px;font-size:13px;color:#d8dced"><span>Caffeine</span><strong>${fmt(v.totals.caffeine_mg,2)} mg</strong></div><h3>Target vs achieved</h3><div class="nutrients">${DIMENSIONS.map(d=>{const t=v.target[d],a=v.totals[d],max=Math.max(t,a,SCALES[d]);return `<div><div class="nutrient-head"><span>${LABELS[d]}</span><span>${fmt(a,3)} / ${fmt(t,3)}</span></div><div class="bar"><i style="width:${Math.min(100,a/max*100)}%"></i><b class="target-line" style="left:${Math.min(100,t/max*100)}%"></b></div></div>`}).join("")}</div><div class="bar-key"><span><b></b>achieved</span><span><b class="target"></b>target</span></div>`;
+      $("#result").innerHTML=html;
+    }
+    function verifierPanel(v,recipe,sliders,power,boost,base){
+      if(!recipe){
+        return `<div class="verifier-box"><div class="verifier-title"><strong>INDEPENDENT VERIFIER</strong><span class="status reject">REJECT</span></div><div class="checklist"><div class="check fail"><span class="check-mark">✕</span><span class="check-label">Mode compatibility</span><span class="check-detail">${v.errors.join(" · ")}</span></div></div></div>`;
+      }
+      const total=sum(BERRIES.map(k=>recipe[k]))+(recipe.guarana_g||0)+recipe.liquid_g;
+      const bounds=BERRIES.every(k=>recipe[k]>=-1e-9&&recipe[k]<=80+1e-9)&&(recipe.guarana_g||0)>=-1e-9&&(recipe.guarana_g||0)<=4.2+1e-9;
+      const mass=Math.abs(total-250)<=1e-9, liquid=recipe.liquid_g>=40-1e-9;
+      const caffeineOk=!boost||(v.totals.caffeine_mg>=50-1e-9&&v.totals.caffeine_mg<=200+1e-9);
+      const modeWarn=sliders.cute>=80&&base==="mineral_water", modeOk=!(boost&&sliders.cute>=80);
+      const checks=[
+        {state:mass?"pass":"fail",label:"Mass balance",detail:`${fmt(total,2)} g = 250 g`},
+        {state:bounds?"pass":"fail",label:"Ingredient bounds",detail:bounds?"berries 0–80 g · guarana 0–4.2 g":"outside limits"},
+        {state:liquid?"pass":"fail",label:"Minimum liquid",detail:`${fmt(recipe.liquid_g,2)} g ${liquid?">=":"<"} 40 g`},
+        {state:caffeineOk?"pass":"fail",label:"Caffeine constraint",detail:boost?`${fmt(v.totals.caffeine_mg,2)} mg · required 50–200 mg`:"not required"},
+        {state:modeOk?(modeWarn?"warn":"pass"):"fail",label:"Mode compatibility",detail:modeOk?(modeWarn?"mineral-water warning noted":"valid") : "Cute + Boost is not allowed"},
+        {state:v.metric?"pass":"fail",label:"Nutrients",detail:v.metric?"independently recalculated":"metric unavailable"}
+      ];
+      const passed=checks.filter(c=>c.state==="pass").length, summary=v.status==="PASS"?`${passed} checks passed`:v.status==="WARN"?`${passed} passed · warning noted`:`${checks.filter(c=>c.state==="fail").length} check failed`;
+      return `<div class="verifier-box"><div class="verifier-title"><strong>INDEPENDENT VERIFIER</strong><span>${v.status} · ${summary}</span></div><div class="checklist">${checks.map(c=>`<div class="check ${c.state}"><span class="check-mark">${c.state==="pass"?"✓":c.state==="warn"?"!":"✕"}</span><span class="check-label">${c.label}</span><span class="check-detail">${c.detail}</span></div>`).join("")}</div></div>`;
+    }
+    setupUI();
+  </script>
+</body>
+</html>
