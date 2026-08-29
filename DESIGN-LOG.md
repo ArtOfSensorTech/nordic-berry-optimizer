@@ -192,3 +192,18 @@ prompt as a user message and makes no tool, web, file, or project-context
 request. Authentication is read only from `OPENROUTER_API_KEY` outside the
 repository. Focused mocked-HTTP tests validate the request shape without a
 real key. The frozen evaluation has not yet been run.
+
+### TASK 3.0 — Pre-evaluation input-parity correction
+
+A read-only smoke/preflight audit found that every frozen case supplied
+`liquid_base` to the agent, while the single-LLM baseline prompt omitted that
+case input. This was an input-parity defect, not an observed evaluation
+result. The prompt and its validation were corrected in SPEC v1.0-rev6 before
+any frozen evaluation was run and before any frozen evaluation result was
+observed.
+
+For v1, `liquid_base` is exclusive: the derived liquid portion is either
+`water` or `mineral_water`. Water/mineral-water mixtures and more general
+liquid compositions such as milk, coffee, or mixtures are outside v1 scope,
+outside the frozen evaluation, and reserved for possible future work. The
+frozen cases themselves were not changed.

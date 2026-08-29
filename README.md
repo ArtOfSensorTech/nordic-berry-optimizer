@@ -16,7 +16,7 @@ The antioxidant figure is a project-specific equal-weight proxy constructed from
 
 ## Baseline
 
-The baseline is exactly the frozen §10 one-shot prompt, with no nutrient tools. The official adapter uses OpenRouter's OpenAI-compatible endpoint and the fixed model ID `z-ai/glm-5.2:free` (GLM 5.2 Free), not `openrouter/free`. It sends the frozen prompt as the sole user message and omits all tool declarations, project files, web search, and file access. The parser preserves an LLM's stated water versus mineral-water choice; absent or conflicting liquid declarations are recorded as invalid, never guessed or repaired.
+The baseline is exactly the frozen §10 one-shot prompt, with no nutrient tools. The official adapter uses OpenRouter's OpenAI-compatible endpoint and the fixed model ID `z-ai/glm-5.2:free` (GLM 5.2 Free), not `openrouter/free`. It sends the frozen prompt as the sole user message and omits all tool declarations, project files, web search, and file access. SPEC v1.0-rev6 explicitly supplies each case's `liquid_base` in that prompt. v1 uses an exclusive liquid-base choice: `water` or `mineral_water`; mixtures are not supported. More general liquid compositions, such as milk, coffee, or mixtures, are future work and are outside v1 and the frozen evaluation. The parser preserves an LLM's stated water versus mineral-water choice; absent or conflicting liquid declarations are recorded as invalid, never guessed or repaired.
 
 ## Evaluation Method
 
@@ -35,7 +35,7 @@ Nutrient data is the locked Fineli table in `data/nutrients.json`. Export `OPENR
 
 ## Improvement Changelog
 
-The pre-implementation revisions in [DESIGN-LOG.md](DESIGN-LOG.md) document the specification review path. The TASK 2.1 corrective pass added finite numeric validation, a separate verifier accounting path, faithful baseline liquid-base parsing, explicit malformed-baseline reporting, and provider/model labels for baseline evaluation. No frozen evaluation result has driven these changes.
+The pre-implementation revisions in [DESIGN-LOG.md](DESIGN-LOG.md) document the specification review path. The TASK 2.1 corrective pass added finite numeric validation, a separate verifier accounting path, faithful baseline liquid-base parsing, explicit malformed-baseline reporting, and provider/model labels for baseline evaluation. A pre-evaluation smoke/preflight audit then found that the agent received `liquid_base` while the single-LLM baseline prompt did not; this was corrected in SPEC v1.0-rev6 before any frozen evaluation was run and before any frozen evaluation result was observed. No frozen evaluation result has driven these changes.
 
 ## Main Failure Mode
 

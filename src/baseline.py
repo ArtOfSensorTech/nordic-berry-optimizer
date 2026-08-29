@@ -11,6 +11,7 @@ FROZEN_PROMPT = (
     "cloudberry, redcurrant, blackcurrant, water, and mineral water. The "
     "drink should emphasize: Data Expert {data}%, Genius {genius}%, Fit {fit}%, "
     "Cute {cute}%. Power Mode: {power_mode}. Stimulant Boost: {stimulant_boost}. "
+    "Liquid base: {liquid_base}. "
     "Give exact grams of each ingredient for a 250g serving."
 )
 
@@ -43,10 +44,14 @@ def validate_llm_configuration(provider: str, model: str) -> None:
 
 def baseline_prompt(case: dict[str, object]) -> str:
     sliders = case["sliders"]
+    liquid_base = case.get("liquid_base")
+    if liquid_base not in ("water", "mineral_water"):
+        raise ValueError("liquid_base must be water or mineral_water")
     return FROZEN_PROMPT.format(data=sliders.get("data", 0), genius=sliders.get("genius", 0),
                                 fit=sliders.get("fit", 0), cute=sliders.get("cute", 0),
                                 power_mode="on" if case.get("power_mode") else "off",
-                                stimulant_boost="on" if case.get("stimulant_boost") else "off")
+                                stimulant_boost="on" if case.get("stimulant_boost") else "off",
+                                liquid_base=liquid_base)
 
 
 def parse_baseline_recipe(text: str) -> BaselineParseResult:

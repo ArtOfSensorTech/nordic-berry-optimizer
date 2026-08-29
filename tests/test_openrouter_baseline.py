@@ -5,7 +5,8 @@ from unittest.mock import patch
 
 from src.baseline import FROZEN_PROMPT
 from src.openrouter_baseline import (GENERATION_SETTINGS, OPENROUTER_API_KEY_ENV,
-                                     OPENROUTER_BASELINE_MODEL, OpenRouterConfigurationError,
+                                     OPENROUTER_BASELINE_MODEL, OPENROUTER_BASELINE_PROVIDER,
+                                     OpenRouterConfigurationError,
                                      make_openrouter_baseline_callable)
 
 
@@ -24,6 +25,9 @@ class _Response:
 
 
 class OpenRouterAdapterTests(unittest.TestCase):
+    def test_fixed_provider_label(self):
+        self.assertEqual(OPENROUTER_BASELINE_PROVIDER, "OpenRouter")
+
     def test_missing_key_fails_before_http(self):
         with patch.dict(os.environ, {}, clear=True):
             with self.assertRaises(OpenRouterConfigurationError):
@@ -37,13 +41,14 @@ class OpenRouterAdapterTests(unittest.TestCase):
             captured["timeout"] = timeout
             return _Response({"choices": [{"message": {"content": "blueberry: 50 g, water: 200 g"}}]})
 
-        prompt = FROZEN_PROMPT.format(data=100, genius=0, fit=0, cute=0, power_mode="off", stimulant_boost="off")
+        prompt = FROZEN_PROMPT.format(data=100, genius=0, fit=0, cute=0, power_mode="off", stimulant_boost="off", liquid_base="mineral_water")
         with patch.dict(os.environ, {OPENROUTER_API_KEY_ENV: "test-key"}, clear=True):
             result = make_openrouter_baseline_callable(opener=opener)(prompt)
         self.assertEqual(result, "blueberry: 50 g, water: 200 g")
         self.assertEqual(captured["timeout"], 60)
         payload = json.loads(captured["request"].data.decode("utf-8"))
         self.assertEqual(payload["model"], OPENROUTER_BASELINE_MODEL)
+        self.assertEqual(len(payload["messages"]), 1)
         self.assertEqual(payload["messages"], [{"role": "user", "content": prompt}])
         self.assertNotIn("tools", payload)
         for name, value in GENERATION_SETTINGS.items():

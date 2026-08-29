@@ -1,12 +1,12 @@
 # Nordic Berry Optimizer — v1.0 Mathematical Specification
 
-Status: **LOCKED v1.0-rev5**. No further mathematical changes permitted
+Status: **LOCKED v1.0-rev6**. No further mathematical changes permitted
 before implementation. This document is the ground truth for the Codex
 build task. Do not modify nutrient data or core formulas without
 updating this file and re-running the frozen evaluation set.
 
 **Revision note (pre-implementation, still before any code was written):**
-this is v1.0-rev5. Fixes vs. rev1 (first draft): normalized the
+this is v1.0-rev6. Fixes vs. rev1 (first draft): normalized the
 slider→target formula to prevent unbounded overflow with multiple high
 sliders (§5); made caffeine a separate objective with its own target/range
 so Stimulant Boost actually does something measurable (§6, §7); made
@@ -321,8 +321,14 @@ this exact system-free prompt and no tools:
 > "Suggest a berry drink recipe using any of blueberry, lingonberry,
 > cloudberry, redcurrant, blackcurrant, water, and mineral water. The
 > drink should emphasize: Data Expert {x}%, Genius {y}%, Fit {z}%, Cute
-> {w}%. Power Mode: {on/off}. Stimulant Boost: {on/off}. Give exact
-> grams of each ingredient for a 250g serving."
+> {w}%. Power Mode: {on/off}. Stimulant Boost: {on/off}. Liquid base:
+> {water/mineral_water}. Give exact grams of each ingredient for a 250g
+> serving."
+
+`liquid_base` is an exclusive v1 choice: `water` means the
+derived liquid portion is water, and `mineral_water` means it is mineral
+water. Mixing water and mineral water, including a mineral-water fraction, is
+outside v1 scope and may be considered future work.
 
 Baseline output is parsed and scored with the same verification and NNTD
 code as the agent — same inputs, same evaluation, no nutrient tools
@@ -348,3 +354,9 @@ available to the baseline.
 
 This set is frozen before implementation. Do not add/remove cases after
 seeing results, to keep the baseline-vs-agent comparison honest.
+
+**v1.0-rev6 pre-evaluation correction:** before any frozen evaluation result
+was observed, the baseline protocol was amended to communicate each case's
+selected `liquid_base` explicitly in the baseline prompt. This is an
+input-parity correction; it does not change the frozen cases, optimization
+semantics, target construction, nutrient data, constraints, verifier, or NNTD.

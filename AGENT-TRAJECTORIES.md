@@ -355,6 +355,19 @@ instead of allowing a changing free-model router. Mocked HTTP tests exercised
 the adapter without credentials. Frozen evaluation remains unrun at this
 checkpoint.
 
+### Trajectory 7 — TASK 3.0 pre-evaluation input-parity correction
+
+The pre-evaluation smoke/preflight audit compared the agent and baseline case
+inputs. It found that the agent received and used `liquid_base`, but the
+single-LLM baseline prompt did not communicate it. The baseline prompt was
+updated and SPEC v1.0-rev6 records the correction before any frozen
+evaluation was run and before any frozen evaluation result was observed.
+
+The v1 contract remains exclusive: the selected liquid base is either
+`water` or `mineral_water`. Mixing those liquids, or introducing more general
+compositions such as milk, coffee, or mixtures, is future work and is not
+part of v1 or the frozen evaluation. The 14 frozen cases were left unchanged.
+
 ---
 
 ## Final submission update — placeholder
