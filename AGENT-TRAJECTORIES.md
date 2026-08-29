@@ -401,6 +401,28 @@ retry, repair, manual reinterpretation, parser adaptation, or protocol change
 was made after the output. No frozen case or result was observed; malformed or
 contract-violating baseline output remains preserved and rejected.
 
+### Trajectory 10 — TASK 4.0A/4.1 failed-run recovery
+
+The first frozen orchestration reached 9 provider-side requests and stopped
+before cases 10–14. Cases 1–8 returned text; case 9 produced empty assistant
+content and was recorded `CALL_FAILED`. Codex initially encountered ambiguous
+tool output and an apparent absence of artifacts, did not fabricate results or
+blindly retry, and requested a read-only forensic investigation. The partial
+artifacts later appeared; they were preserved unchanged under the incident
+archive.
+
+The audit established that the runner held results in memory and wrote all
+artifacts only after leaving its loop. Rev8 therefore adds per-case atomic
+checkpointing and changes ordinary baseline failure handling from whole-run
+fail-fast to failure isolation. Each case still receives exactly one attempt;
+`CALL_FAILED` remains distinct from parser `INVALID` and continues to the next
+case without retry. This is a persistence/completeness correction, not a
+change to prompts, model, settings, routing, parser, verifier, optimizer,
+NNTD, scoring, or frozen cases. OpenRouter automatic backend routing remains a
+reproducibility limitation, and backend pinning was not introduced after the
+failed run. Two requests reached the 2048-token ceiling; `max_tokens` was not
+changed.
+
 ---
 
 ## Final submission update — placeholder

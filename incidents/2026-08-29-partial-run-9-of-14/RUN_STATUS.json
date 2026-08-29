@@ -1,0 +1,22 @@
+{
+  "status": "incomplete_failed_run",
+  "intended_cases": 14,
+  "baseline_requests_made": 9,
+  "baseline_responses_with_text": 8,
+  "failed_case": 9,
+  "failure": "OpenRouter response had empty assistant text",
+  "unrequested_cases": [10, 11, 12, 13, 14],
+  "protocol_revision": "v1.0-rev7",
+  "protocol_commit": "aa02fe2",
+  "documentation_checkpoint": "300b60d",
+  "provider": "OpenRouter",
+  "model": "z-ai/glm-5.2",
+  "temperature": 0,
+  "top_p": 1,
+  "max_tokens": 2048,
+  "stream": false,
+  "provider routing": "automatic OpenRouter routing",
+  "retries": "none",
+  "fallback": "none",
+  "protocol changed based on frozen scores/content": false
+}

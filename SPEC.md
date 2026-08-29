@@ -1,12 +1,12 @@
 # Nordic Berry Optimizer — v1.0 Mathematical Specification
 
-Status: **LOCKED v1.0-rev7**. No further mathematical changes permitted
+Status: **LOCKED v1.0-rev8**. No further mathematical changes permitted
 before implementation. This document is the ground truth for the Codex
 build task. Do not modify nutrient data or core formulas without
 updating this file and re-running the frozen evaluation set.
 
 **Revision note (pre-implementation, still before any code was written):**
-this is v1.0-rev7. Fixes vs. rev1 (first draft): normalized the
+this is v1.0-rev8. Fixes vs. rev1 (first draft): normalized the
 slider→target formula to prevent unbounded overflow with multiple high
 sliders (§5); made caffeine a separate objective with its own target/range
 so Stimulant Boost actually does something measurable (§6, §7); made
@@ -49,12 +49,20 @@ verifier-tries-to-fix-it problem as the caffeine case — resolved
 identically: this must hold by construction via the optimizer's own
 constraint (§7), and the verifier only checks and rejects on violation,
 treating it as an internal error rather than something to repair (§3,
-§8.3). This full revision history (rev1 → rev5, including two
+§8.3). This full revision history (rev1 → rev8, including two
 independent read-only agent review passes before any implementation)
 is itself strong material for the Improvement Changelog deliverable —
 it demonstrates disciplined, structured iteration on the specification
 driven by review from multiple angles, not trial and error against the
 eval set.
+
+Revision summary: rev6 added the frozen-case `liquid_base` to the baseline
+prompt for input parity without changing the frozen cases (§10/§11). Rev7
+selected paid `z-ai/glm-5.2`, locked `max_tokens=2048`, and retained default
+reasoning after free-endpoint reliability failures (§10). Rev8 replaced
+ordinary whole-run fail-fast with per-case failure isolation and added
+per-case persistence/checkpointing; each case still receives exactly one
+attempt (§11).
 
 ## 1. Purpose statement (no health claims)
 
@@ -386,3 +394,25 @@ was observed, the baseline protocol was amended to communicate each case's
 selected `liquid_base` explicitly in the baseline prompt. This is an
 input-parity correction; it does not change the frozen cases, optimization
 semantics, target construction, nutrient data, constraints, verifier, or NNTD.
+
+**v1.0-rev8 pre-rerun recovery correction:** frozen run #1 exposed a
+run-level reliability weakness when case 9 produced empty assistant content
+and the fail-fast orchestration prevented cases 10–14 from receiving their
+independent attempts. Before any rerun, failure isolation was changed so that
+each frozen case receives exactly one baseline inference attempt; a normal
+per-case `CALL_FAILED` is preserved as failed and the next case is attempted.
+There is no retry, repair, fallback, or model substitution. The run stops only
+for an infrastructure or configuration failure that makes safe continuation
+ambiguous. Specifically, an HTTP/provider error, request timeout,
+empty/missing/non-text assistant content, or other adapter-level failure from
+that one baseline attempt consumes the case's single attempt, is persisted as
+`CALL_FAILED`, receives no retry/fallback/substitution, and allows execution
+to continue to the next frozen case. Whole-run termination is reserved for
+corrupted or unwritable checkpoint state, inconsistent frozen-case identity,
+configuration mismatch against the locked baseline settings, or an
+unexpected internal runner exception where continuing could make request
+accounting or provenance ambiguous. This improves completeness and failure
+isolation, not model performance. No parser, verifier, scoring, frozen prompt,
+model, generation setting, routing, optimizer, NNTD, or nutrient-data change
+was made, and the decision was made before any frozen raw response content was
+manually inspected or used for tuning.

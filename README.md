@@ -53,6 +53,27 @@ Nutrient data is the locked Fineli table in `data/nutrients.json`. Export `OPENR
 
 The pre-implementation revisions in [DESIGN-LOG.md](DESIGN-LOG.md) document the specification review path. The TASK 2.1 corrective pass added finite numeric validation, a separate verifier accounting path, faithful baseline liquid-base parsing, explicit malformed-baseline reporting, and provider/model labels for baseline evaluation. A pre-evaluation smoke/preflight audit then found that the agent received `liquid_base` while the single-LLM baseline prompt did not; this was corrected in SPEC v1.0-rev6 before any frozen evaluation was run and before any frozen evaluation result was observed. Subsequent pre-evaluation smoke testing found repeated upstream HTTP 429 responses from the free endpoint, HTTP 200 connectivity from the paid endpoint, and a first paid 512-token response with `message.content=null`. Public metadata then showed default reasoning effort `high` with no advertised `none` effort. SPEC v1.0-rev7 therefore selects paid `z-ai/glm-5.2` with `max_tokens=2048` and default reasoning behavior. All changes occurred before frozen evaluation/results; no frozen evaluation result has driven them.
 
+Frozen run #1 was an incomplete failed run: cases 1–8 returned baseline text,
+case 9 produced empty assistant content and was recorded `CALL_FAILED`, and
+cases 10–14 were never attempted. Its artifacts are preserved under
+`incidents/2026-08-29-partial-run-9-of-14/`. The initial apparent absence of
+artifacts was a timing/tool-output race; partial results were eventually
+persisted. The diagnosis was read-only, with no retry and no raw frozen output
+used to tune methodology.
+
+SPEC v1.0-rev8 changes whole-run fail-fast behavior to per-case failure
+isolation: every frozen case receives exactly one baseline attempt, and a
+`CALL_FAILED` case is retained and followed by the next case without retry,
+repair, fallback, or substitution. Per-case atomic checkpoints now update the
+normal evaluation artifacts and `evaluation/run_status.json` immediately after
+each attempted case. The model, prompts, parser, verifier, optimizer, NNTD,
+scoring, and generation settings remain unchanged. OpenRouter automatically
+routes requests for the same model ID across backend providers; minor response
+variation between reproduction runs is possible. Backend pinning was not
+introduced after run #1 because it would change the locked transport
+configuration. Two run #1 requests reached the 2048-token generation ceiling;
+`max_tokens` was deliberately not changed.
+
 ## Main Failure Mode
 
 The deterministic coordinate search is bounded and reproducible but is not a formal global-optimum proof for the nonlinear mass-weighted antioxidant ratio. Baseline evaluation also cannot begin until an operator supplies and identifies the required LLM callable.

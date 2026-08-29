@@ -227,6 +227,35 @@ reproducibility correction, not a change based on evaluation performance. The
 14 frozen cases, prompts, objectives, verifier, optimizer, NNTD, nutrient
 data, constraints, and evaluation semantics remain unchanged.
 
+### TASK 4.1 — Failed-run preservation and rev8 recovery protocol
+
+Frozen run #1 made 9 baseline requests: cases 1–8 returned text, case 9
+produced empty assistant content and was recorded `CALL_FAILED`, and cases
+10–14 were not attempted. The original apparent absence of artifacts was a
+timing/tool-output race; the partial artifacts eventually appeared and were
+preserved byte-for-byte under
+`incidents/2026-08-29-partial-run-9-of-14/`. The forensic diagnosis was
+read-only; no retry occurred and no raw frozen output was used to tune the
+methodology.
+
+SPEC v1.0-rev8 changes only failure isolation: each frozen case receives one
+baseline attempt, a normal `CALL_FAILED` is preserved and the next case is
+attempted, and failed cases are never retried, repaired, or substituted. The
+run stops only when an infrastructure/configuration failure makes safe
+continuation ambiguous. Per-case atomic same-filesystem checkpoints now write
+the three normal artifacts and `evaluation/run_status.json` after each
+attempted case, with monotonic request ordinals and completed case IDs. This
+improves completeness and persistence, not model performance; prompts, model,
+generation settings, routing, parser, verifier, optimizer, NNTD, scoring,
+nutrient data, and frozen cases remain unchanged.
+
+OpenRouter automatically routes requests for the same model ID across backend
+providers; minor response variation between reproduction runs is possible.
+Backend pinning was deliberately not introduced after run #1 because it would
+change the already locked transport configuration. Two requests in run #1
+reached the locked 2048-token generation ceiling, and `max_tokens` was not
+changed.
+
 ### TASK 3.8 — Final paid baseline smoke checkpoint
 
 After rev7 was committed, exactly one deliberately non-frozen smoke case was
