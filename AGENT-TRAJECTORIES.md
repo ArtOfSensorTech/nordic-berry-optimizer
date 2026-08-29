@@ -342,6 +342,19 @@ Planned evidence:
 No evaluation result should be entered here before it has actually
 been observed.
 
+### TASK 3 preparation — baseline adapter checkpoint
+
+Human direction selected OpenRouter as the API gateway and GLM 5.2 Free as the
+official named baseline model. The implementation agent verified the exact
+fixed ID (`z-ai/glm-5.2:free`) from OpenRouter material, then added a
+standard-library OpenAI-compatible adapter. It reads `OPENROUTER_API_KEY` only
+from the environment, sends the frozen prompt as the sole user message, and
+does not request tools, web search, file access, or project context. A fixed
+ID was chosen over `openrouter/free` to keep the evaluated model identifiable
+instead of allowing a changing free-model router. Mocked HTTP tests exercised
+the adapter without credentials. Frozen evaluation remains unrun at this
+checkpoint.
+
 ---
 
 ## Final submission update — placeholder

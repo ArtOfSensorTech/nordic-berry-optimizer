@@ -181,3 +181,14 @@ Remaining evaluation configuration:
   baseline;
 - run the frozen evaluation set;
 - collect baseline vs. agent results without changing the frozen cases.
+
+## TASK 3 preparation — OpenRouter baseline adapter
+
+OpenRouter was selected as the evaluation API gateway, with GLM 5.2 Free as
+the named baseline model (`z-ai/glm-5.2:free`). A fixed model ID is used rather
+than `openrouter/free` so the baseline does not silently route among changing
+free models. The standard-library adapter sends only the exact frozen §10
+prompt as a user message and makes no tool, web, file, or project-context
+request. Authentication is read only from `OPENROUTER_API_KEY` outside the
+repository. Focused mocked-HTTP tests validate the request shape without a
+real key. The frozen evaluation has not yet been run.

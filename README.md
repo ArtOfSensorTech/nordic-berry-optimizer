@@ -16,7 +16,7 @@ The antioxidant figure is a project-specific equal-weight proxy constructed from
 
 ## Baseline
 
-The baseline is exactly the frozen §10 one-shot prompt, with no nutrient tools. At evaluation time an operator supplies a provider-agnostic callable plus explicit `provider` and `model` labels. No credentials, provider, or model are hardcoded. The parser preserves an LLM's stated water versus mineral-water choice; absent or conflicting liquid declarations are recorded as invalid, never guessed or repaired.
+The baseline is exactly the frozen §10 one-shot prompt, with no nutrient tools. The official adapter uses OpenRouter's OpenAI-compatible endpoint and the fixed model ID `z-ai/glm-5.2:free` (GLM 5.2 Free), not `openrouter/free`. It sends the frozen prompt as the sole user message and omits all tool declarations, project files, web search, and file access. The parser preserves an LLM's stated water versus mineral-water choice; absent or conflicting liquid declarations are recorded as invalid, never guessed or repaired.
 
 ## Evaluation Method
 
@@ -31,7 +31,7 @@ python3 -m unittest discover -s tests
 python3 -m src.cli --data 100 --liquid-base water
 ```
 
-Nutrient data is the locked Fineli table in `data/nutrients.json`. For baseline evaluation, provide a callable with signature `str -> str` to `run_baseline_cases`, together with truthful provider/model labels. The operator must choose the same LLM/model used elsewhere in the submission; that choice is an explicit evaluation configuration decision.
+Nutrient data is the locked Fineli table in `data/nutrients.json`. Export `OPENROUTER_API_KEY` outside the repository, then create the callable with `make_openrouter_baseline_callable()` and pass it to `run_baseline_cases(..., provider="OpenRouter", model="z-ai/glm-5.2:free")`. The adapter uses `temperature=0`, `top_p=1`, `max_tokens=512`, and `stream=false`; zero temperature requests minimal sampling but does not promise bitwise-identical provider output. The key is never stored, printed, or committed.
 
 ## Improvement Changelog
 
