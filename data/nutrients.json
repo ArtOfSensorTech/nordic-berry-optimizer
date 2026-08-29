@@ -1,0 +1,9 @@
+{
+  "blueberry": {"fineli_id": "442", "kcal": 64.5, "sugar_g": 8.39, "fiber_g": 3.30, "vitc_mg": 7.16, "vite_mg": 1.85, "vitk_ug": 9.0, "k_mg": 110.0, "ca_mg": 19.0, "mg_mg": 9.0, "na_mg": 2.0},
+  "lingonberry": {"kcal": 48.8, "sugar_g": 8.17, "fiber_g": 2.60, "vitc_mg": 10.70, "vite_mg": 1.53, "vitk_ug": 9.0, "k_mg": 80.0, "ca_mg": 22.0, "mg_mg": 9.0, "na_mg": 2.0},
+  "cloudberry": {"kcal": 55.0, "sugar_g": 5.81, "fiber_g": 6.30, "vitc_mg": 61.60, "vite_mg": 2.95, "vitk_ug": 9.0, "k_mg": 170.0, "ca_mg": 16.0, "mg_mg": 29.0, "na_mg": 2.0},
+  "redcurrant": {"kcal": 56.6, "sugar_g": 7.50, "fiber_g": 5.00, "vitc_mg": 30.0, "vite_mg": 0.82, "vitk_ug": 11.0, "k_mg": 310.0, "ca_mg": 40.0, "mg_mg": 14.0, "na_mg": 0.6},
+  "blackcurrant": {"kcal": 74.1, "sugar_g": 8.58, "fiber_g": 5.80, "vitc_mg": 128.0, "vite_mg": 2.23, "vitk_ug": 30.0, "k_mg": 340.0, "ca_mg": 72.0, "mg_mg": 24.0, "na_mg": 2.0},
+  "mineral_water": {"fineli_id": "915", "kcal": 0.0, "sugar_g": 0.0, "fiber_g": 0.0, "vitc_mg": 0.0, "vite_mg": 0.0, "vitk_ug": 0.0, "k_mg": 13.5, "ca_mg": 4.7, "mg_mg": 7.23, "na_mg": 45.0},
+  "water": {"kcal": 0.0, "sugar_g": 0.0, "fiber_g": 0.0, "vitc_mg": 0.0, "vite_mg": 0.0, "vitk_ug": 0.0, "k_mg": 0.0, "ca_mg": 0.0, "mg_mg": 0.0, "na_mg": 0.0}
+}
