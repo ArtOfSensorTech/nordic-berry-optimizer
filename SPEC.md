@@ -1,12 +1,12 @@
 # Nordic Berry Optimizer — v1.0 Mathematical Specification
 
-Status: **LOCKED v1.0-rev6**. No further mathematical changes permitted
+Status: **LOCKED v1.0-rev7**. No further mathematical changes permitted
 before implementation. This document is the ground truth for the Codex
 build task. Do not modify nutrient data or core formulas without
 updating this file and re-running the frozen evaluation set.
 
 **Revision note (pre-implementation, still before any code was written):**
-this is v1.0-rev6. Fixes vs. rev1 (first draft): normalized the
+this is v1.0-rev7. Fixes vs. rev1 (first draft): normalized the
 slider→target formula to prevent unbounded overflow with multiple high
 sliders (§5); made caffeine a separate objective with its own target/range
 so Stimulant Boost actually does something measurable (§6, §7); made
@@ -315,8 +315,19 @@ violations correctly rejected, unreachable targets flagged.
 
 ## 10. Baseline definition (frozen prompt)
 
-Baseline = single call to the same LLM used elsewhere in the project, with
-this exact system-free prompt and no tools:
+Baseline = a single call to a general-purpose LLM with no tools or project
+context. It is not required to use the same LLM as the agent development
+workflow. The official pre-evaluation configuration is:
+
+- Provider: OpenRouter
+- Model: `z-ai/glm-5.2`
+- `temperature=0`
+- `top_p=1`
+- `max_tokens=2048`
+- `stream=false`
+
+The call has exactly one user message containing this exact system-free
+prompt and no tools:
 
 > "Suggest a berry drink recipe using any of blueberry, lingonberry,
 > cloudberry, redcurrant, blackcurrant, water, and mineral water. The
@@ -333,6 +344,21 @@ outside v1 scope and may be considered future work.
 Baseline output is parsed and scored with the same verification and NNTD
 code as the agent — same inputs, same evaluation, no nutrient tools
 available to the baseline.
+
+OpenRouter metadata reports reasoning enabled by default for this model, with
+default effort `high`, non-mandatory reasoning, and supported efforts `high`
+and `xhigh`; effort `none` is not advertised. The baseline sends no invented
+reasoning override and accepts only non-empty `message.content` as its answer.
+
+The original `z-ai/glm-5.2:free` endpoint repeatedly returned upstream HTTP
+429 during pre-evaluation smoke testing. The paid endpoint returned HTTP 200
+in a connectivity smoke, but its first 512-token response had null
+`message.content`. Rev7 therefore uses paid `z-ai/glm-5.2` with
+`max_tokens=2048` and the model's default reasoning behavior for reliability
+and reproducibility, not because of evaluation performance. This correction
+was made before any frozen evaluation was run and before any frozen result was
+observed. The 14 frozen cases, prompts, objectives, verifier, optimizer,
+NNTD, nutrient data, constraints, and evaluation semantics remain unchanged.
 
 ## 11. Frozen evaluation set (14 cases)
 

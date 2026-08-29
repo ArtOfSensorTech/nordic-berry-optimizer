@@ -16,12 +16,13 @@ from urllib.request import Request, urlopen
 OPENROUTER_API_KEY_ENV = "OPENROUTER_API_KEY"
 OPENROUTER_CHAT_COMPLETIONS_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_BASELINE_PROVIDER = "OpenRouter"
-OPENROUTER_BASELINE_MODEL = "z-ai/glm-5.2:free"
+OPENROUTER_BASELINE_MODEL = "z-ai/glm-5.2"
 
 # Explicit request settings: temperature 0 and top_p 1 request minimal sampling;
-# 512 output tokens is ample for exact ingredient grams. The model/API may not
+# 2048 output tokens leaves room for the model's default reasoning and exact
+# ingredient grams. The model/API may not
 # guarantee bitwise deterministic output, so results retain raw baseline text.
-GENERATION_SETTINGS = {"temperature": 0, "top_p": 1, "max_tokens": 512, "stream": False}
+GENERATION_SETTINGS = {"temperature": 0, "top_p": 1, "max_tokens": 2048, "stream": False}
 _SAFE_HTTP_ERROR_HEADERS = {
     "retry-after", "request-id", "x-request-id", "ratelimit-limit", "ratelimit-remaining",
     "ratelimit-reset", "x-ratelimit-limit", "x-ratelimit-remaining", "x-ratelimit-reset",

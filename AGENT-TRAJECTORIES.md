@@ -368,6 +368,22 @@ The v1 contract remains exclusive: the selected liquid base is either
 compositions such as milk, coffee, or mixtures, is future work and is not
 part of v1 or the frozen evaluation. The 14 frozen cases were left unchanged.
 
+### Trajectory 8 — TASK 3.7 paid baseline protocol lock
+
+Pre-evaluation smoke testing repeatedly received upstream HTTP 429 responses
+from the free `z-ai/glm-5.2:free` endpoint. A paid `z-ai/glm-5.2` connectivity
+smoke returned HTTP 200, but the first paid request with `max_tokens=512`
+returned `message.content=null`. Public model metadata showed reasoning enabled
+by default, default effort `high`, supported efforts `high` and `xhigh`, and no
+advertised `none` effort.
+
+Before any frozen evaluation or frozen result, the protocol was corrected in
+rev7 to use paid `z-ai/glm-5.2` with `max_tokens=2048` and default reasoning
+behavior. This was a reliability and reproducibility correction, not an
+evaluation-performance change. The 14 frozen cases, prompts, objectives,
+verifier, optimizer, NNTD, nutrient data, constraints, and evaluation
+semantics remain unchanged.
+
 ---
 
 ## Final submission update — placeholder

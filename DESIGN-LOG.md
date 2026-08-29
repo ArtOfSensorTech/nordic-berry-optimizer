@@ -184,14 +184,17 @@ Remaining evaluation configuration:
 
 ## TASK 3 preparation — OpenRouter baseline adapter
 
-OpenRouter was selected as the evaluation API gateway, with GLM 5.2 Free as
-the named baseline model (`z-ai/glm-5.2:free`). A fixed model ID is used rather
+OpenRouter was selected as the evaluation API gateway, with Z.ai GLM 5.2 as
+the named baseline model (`z-ai/glm-5.2`). A fixed model ID is used rather
 than `openrouter/free` so the baseline does not silently route among changing
-free models. The standard-library adapter sends only the exact frozen §10
+models. The standard-library adapter sends only the exact frozen §10
 prompt as a user message and makes no tool, web, file, or project-context
 request. Authentication is read only from `OPENROUTER_API_KEY` outside the
-repository. Focused mocked-HTTP tests validate the request shape without a
-real key. The frozen evaluation has not yet been run.
+repository. The protocol uses `temperature=0`, `top_p=1`, `max_tokens=2048`,
+and `stream=false`; it leaves the model's documented default reasoning
+behavior in place and sends no unsupported `none` effort. Focused mocked-HTTP
+tests validate the request shape without a real key. The frozen evaluation has
+not yet been run.
 
 ### TASK 3.0 — Pre-evaluation input-parity correction
 
@@ -205,5 +208,21 @@ observed.
 For v1, `liquid_base` is exclusive: the derived liquid portion is either
 `water` or `mineral_water`. Water/mineral-water mixtures and more general
 liquid compositions such as milk, coffee, or mixtures are outside v1 scope,
-outside the frozen evaluation, and reserved for possible future work. The
-frozen cases themselves were not changed.
+ outside the frozen evaluation, and reserved for possible future work. The
+ frozen cases themselves were not changed.
+
+### TASK 3.7 — Paid baseline protocol lock
+
+Pre-evaluation smoke testing repeatedly received upstream HTTP 429 from the
+free `z-ai/glm-5.2:free` endpoint. A paid `z-ai/glm-5.2` connectivity smoke
+then returned HTTP 200, but its first request with `max_tokens=512` returned
+`message.content=null`. Public model metadata reported reasoning enabled by
+default, default effort `high`, non-mandatory reasoning, and supported efforts
+`high` and `xhigh`; effort `none` was not advertised.
+
+Before any frozen evaluation was run or any frozen result was observed, rev7
+therefore selected paid `z-ai/glm-5.2`, increased `max_tokens` to 2048, and
+retained the default reasoning behavior. This is a reliability and
+reproducibility correction, not a change based on evaluation performance. The
+14 frozen cases, prompts, objectives, verifier, optimizer, NNTD, nutrient
+data, constraints, and evaluation semantics remain unchanged.

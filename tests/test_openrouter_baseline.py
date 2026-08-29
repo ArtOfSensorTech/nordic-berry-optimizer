@@ -29,6 +29,8 @@ class _Response:
 class OpenRouterAdapterTests(unittest.TestCase):
     def test_fixed_provider_label(self):
         self.assertEqual(OPENROUTER_BASELINE_PROVIDER, "OpenRouter")
+        self.assertEqual(OPENROUTER_BASELINE_MODEL, "z-ai/glm-5.2")
+        self.assertEqual(GENERATION_SETTINGS, {"temperature": 0, "top_p": 1, "max_tokens": 2048, "stream": False})
 
     def test_missing_key_fails_before_http(self):
         with patch.dict(os.environ, {}, clear=True):
