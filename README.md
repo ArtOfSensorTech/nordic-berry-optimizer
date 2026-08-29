@@ -50,14 +50,18 @@ Cases 11 and 12 matched their pre-declared expectations in the pre-implementatio
 
 ## Reproduction Guide
 
-Use a clean Python 3 environment; no external packages are required.
+Use Python 3.10 or newer in a clean environment; no external packages are required. Run the following commands from the repository root:
 
 ```bash
 python3 -m unittest discover -s tests
 python3 -m src.cli --data 100 --liquid-base water
 ```
 
+The CLI command runs the agent path locally—target construction, optimization, and independent verification—with no LLM/API call, network access, credentials, or monetary cost.
+
 Nutrient data is the locked Fineli table in `data/nutrients.json`. Export `OPENROUTER_API_KEY` outside the repository, then create the callable with `make_openrouter_baseline_callable()` and pass it to `run_baseline_cases(..., provider="OpenRouter", model="z-ai/glm-5.2")`. The adapter uses `temperature=0`, `top_p=1`, `max_tokens=2048`, and `stream=false`; model reasoning remains at its documented default because OpenRouter metadata reports reasoning enabled by default with `high`/`xhigh` efforts and does not advertise effort `none`. Zero temperature requests minimal sampling but does not promise bitwise-identical provider output. The key is never stored, printed, or committed.
+
+The agent-only path has no API cost; baseline reproduction uses the paid OpenRouter model and therefore incurs provider charges.
 
 ## Improvement Changelog
 
