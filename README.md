@@ -2,6 +2,8 @@
 
 **[▶ Launch the Interactive Demo](https://artofsensortech.github.io/nordic-berry-optimizer/)**
 
+Hackathon Video: https://vimeo.com/1222496888
+
 Deterministic Nordic berry drink optimization with independent verification — built as an auditable AI-agent engineering workflow.
 
 ## Problem & Intended User
