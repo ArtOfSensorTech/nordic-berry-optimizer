@@ -69,7 +69,22 @@ The agent-only path has no API cost; baseline reproduction uses the paid OpenRou
 
 ## Improvement Changelog
 
-The pre-implementation revisions in [DESIGN-LOG.md](DESIGN-LOG.md) document the specification review path. The TASK 2.1 corrective pass added finite numeric validation, a separate verifier accounting path, faithful baseline liquid-base parsing, explicit malformed-baseline reporting, and provider/model labels for baseline evaluation. A pre-evaluation smoke/preflight audit then found that the agent received `liquid_base` while the single-LLM baseline prompt did not; this was corrected in SPEC v1.0-rev6 before any frozen evaluation was run and before any frozen evaluation result was observed. Subsequent pre-evaluation smoke testing found repeated upstream HTTP 429 responses from the free endpoint, HTTP 200 connectivity from the paid endpoint, and a first paid 512-token response with `message.content=null`. Public metadata then showed default reasoning effort `high` with no advertised `none` effort. SPEC v1.0-rev7 therefore selects paid `z-ai/glm-5.2` with `max_tokens=2048` and default reasoning behavior. All changes occurred before frozen evaluation/results; no frozen evaluation result has driven them.
+The important experiments and decisions are summarized below; detailed
+specification history is in [DESIGN-LOG.md](DESIGN-LOG.md).
+
+| Stage | What we tried and why | Evidence | Decision / learning |
+|---|---|---|---|
+| Simple baseline | Started with a single one-shot LLM recipe request to establish a transparent comparator without tools or project context. | [SPEC.md](SPEC.md) §10; commit `4d06e7e` | Keep the baseline simple and auditable, while treating free-text parsing as a separate failure surface. |
+| Target model and normalization | Reviewed slider-to-target construction so four preferences remain normalized and comparable. | [SPEC.md](SPEC.md) §5; commits `0d49eb4`, `2d3128c`; [DESIGN-LOG.md](DESIGN-LOG.md) | Lock the target construction before implementation rather than tune it from evaluation output. |
+| Stimulant/caffeine objective | Added a measurable Boost objective and feasibility rule instead of leaving Stimulant Boost as a label: caffeine 50–200 mg, with a 100 mg target/tie-break. | [SPEC.md](SPEC.md) §§6–7; [DESIGN-LOG.md](DESIGN-LOG.md) | Make Boost behavior explicit and deterministic. Cute ≥80 plus Boost remains a hard reject. |
+| Mineral-water representation | Added an explicit, exclusive `water`/`mineral_water` choice and its sodium treatment. | [SPEC.md](SPEC.md) §§5–6; [DESIGN-LOG.md](DESIGN-LOG.md) | Preserve the selected liquid base as a real task input; mixtures remain outside v1. |
+| Antioxidant proxy | Challenged the early arbitrary VitE ×10 coefficient because it had no defensible basis; removed it before implementation and used equal weighting of the defined vitamin components. | [SPEC.md](SPEC.md) §2; [DESIGN-LOG.md](DESIGN-LOG.md) Iteration 4 | Prefer a documented, reproducible proxy over an unsupported weighting. |
+| Mass balance and guarana | Corrected the serving equation to include guarana and derived liquid, with liquid ≥40 g. | [SPEC.md](SPEC.md) §§3, 7; [DESIGN-LOG.md](DESIGN-LOG.md) Iteration 5 | Make mass balance an explicit verifier constraint; do not infer quality from optimizer totals alone. |
+| Independent verifier | Separated nutrient reloading/recalculation and verification from optimizer-reported accounting. | [src/verify.py](src/verify.py); commit `ae0bbd4`; tests | Generation proposes a recipe; deterministic verification decides whether the defined constraints hold. |
+| Input parity | Found that the agent received `liquid_base` while the baseline prompt did not, and added it before any frozen evaluation. | [SPEC.md](SPEC.md) rev6; commit `53a3cd4` | Baseline and agent receive the same frozen liquid-base input; frozen cases were unchanged. |
+| Paid baseline protocol | Free endpoint smoke requests returned upstream 429; paid connectivity returned 200, while the first paid 512-token response had empty content. Metadata showed default high reasoning and no advertised `none` effort. | [SPEC.md](SPEC.md) rev7; commit `aa02fe2`; [DESIGN-LOG.md](DESIGN-LOG.md) | Lock paid `z-ai/glm-5.2`, `max_tokens=2048`, and default reasoning for reliability/reproducibility before evaluation. |
+| Recovery protocol | Frozen run #1 reached 9/14 requests, with case 9 empty content; per-case checkpointing and failure isolation were added. | [incidents/2026-08-29-partial-run-9-of-14/](incidents/2026-08-29-partial-run-9-of-14/); [SPEC.md](SPEC.md) rev8; commit `94f97a4` | Keep exactly one attempt per case, persist `CALL_FAILED`, and continue without retry, repair, fallback, or substitution. |
+| Final frozen evaluation | Ran all 14 cases under the locked protocol after the recovery correction. | [evaluation/](evaluation/); commit `eac8463` | Agent 12/14 and baseline 1/14 are end-to-end workflow results under deterministic verification and the locked parser, not a pure model-capability comparison. Only one case was paired/scorable; no broad NNTD superiority or global-optimum claim follows. |
 
 Frozen run #1 was an incomplete failed run: cases 1–8 returned baseline text,
 case 9 produced empty assistant content and was recorded `CALL_FAILED`, and
@@ -112,4 +127,8 @@ This tool optimizes toward a user-defined nutrient profile. It does not diagnose
 
 ## Agent Trajectories
 
-The submission will document representative agent trajectories: instructions, tool actions, feedback, retries, specification checkpoints, and human approval points. This repository records available design history but does not invent missing model transcripts, reviewers, runtime, cost, or evaluation results.
+Representative summarized trajectories, reconstructed from committed design
+history, source, tests, artifacts, and Git history, are recorded in
+[AGENT-TRAJECTORIES.md](AGENT-TRAJECTORIES.md). Raw CLI/conversation
+transcripts are not committed; missing raw traces are identified rather than
+invented.

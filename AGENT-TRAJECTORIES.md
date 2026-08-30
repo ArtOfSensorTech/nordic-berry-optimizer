@@ -1,456 +1,159 @@
 # Agent Trajectories
 
-## Purpose
+## Evidence status
 
-This document records representative agent-assisted development
-trajectories used during the development of **Nordic Berry Optimizer**.
+This document indexes curated representative trajectory evidence. The linked
+trace files preserve selected authentic project material, while complete CLI,
+chat/conversation, and tool-channel histories remain private and are not
+included. Exact quotations are used only where the corresponding trace or
+committed project file contains them; connective summaries are labeled as
+summaries rather than raw transcripts.
 
-It is intentionally maintained as a living record and will be updated as
-implementation, evaluation, and submission preparation continue.
-
-The purpose is to make agent contributions, feedback loops, retries,
-decisions, and human checkpoints transparent and reproducible.
-
----
+The trajectories distinguish agent activity from human checkpoints and from
+later read-only interpretation of frozen results.
 
 ## Trajectory 1 — Initial design review
 
-### Agent
-Claude
-
-### Objective
-Review and challenge the initial product concept before implementation.
-
-### Context provided
-The project concept was developed around Nordic forest berries,
-user-defined preference sliders, recipe optimization, Power Mode,
-Stimulant Boost, safety verification, and a baseline-vs-agent evaluation.
-
-### Agent contribution
-The design was iteratively reviewed and refined. Topics included:
-
-- Power Mode for Fit;
-- stimulant functionality;
-- deterministic safety verification;
-- mineral-water as a liquid-base option;
-- baseline comparison;
-- evaluation methodology.
-
-### Human checkpoint
-Design suggestions were reviewed by the human developer before being
-incorporated into the specification.
-
-### Evidence / source material
-Conversation transcript to be linked or summarized in the final
-submission package.
-
----
+**Agent:** Claude
+**Purpose:** Challenge the initial Nordic berry optimizer concept before implementation.
+**Instruction / task:** Review the proposed sliders, Power Mode, Stimulant Boost, mineral water, verification, and baseline comparison.
+**Agent actions:** The design review raised questions about Fit/Power Mode, stimulant functionality, deterministic verification, mineral-water representation, and baseline methodology.
+**Tool / execution evidence:** A redacted representative excerpt from authentic conversation material is available in [Claude's trace](agent-traces/claude/01-specification-and-verification-review.md). The summarized design decisions are also recorded in `DESIGN-LOG.md` Iterations 1–3 and the early `SPEC.md` revisions.
+**Feedback or finding:** The concept needed explicit constraints and an auditable comparison path.
+**Human checkpoint / decision:** The human reviewed the suggestions before incorporating them into the specification.
+**Resulting project change:** The initial product scope and constraint questions were formalized for later specification review.
+**Evidence location:** [Claude's representative trace](agent-traces/claude/01-specification-and-verification-review.md), `DESIGN-LOG.md`, and `SPEC.md`. Complete conversation history is not included.
 
 ## Trajectory 2 — Mathematical specification review
 
-### Agent
-ChatGPT
-
-### Objective
-Independently review the mathematical and architectural design before
-implementation.
-
-### Key findings
-The review identified several specification-level problems during the
-pre-implementation iterations, including:
-
-1. slider target scaling could exceed the intended normalization range;
-2. Stimulant Boost initially had no optimization objective;
-3. mineral water was not meaningfully represented in the optimization;
-4. the initial antioxidant proxy contained an arbitrary coefficient.
-
-### Feedback loop
-The findings were discussed with the independent design reviewer and
-incorporated into subsequent specification revisions.
-
-### Result
-The specification was progressively revised before implementation and
-eventually locked as **v1.0-rev5**.
-
-### Human checkpoint
-No implementation was authorized until the mathematical specification
-had been reviewed and locked.
-
----
+**Agent:** ChatGPT
+**Purpose:** Independently challenge the mathematical and architectural design before implementation.
+**Instruction / task:** Review target normalization, stimulant/caffeine semantics, mineral-water treatment, and the antioxidant proxy.
+**Agent actions:** The review identified excessive target scaling, an initially unmeasured Stimulant Boost, weak mineral-water representation, and an arbitrary antioxidant coefficient.
+**Tool / execution evidence:** A representative project trace derived from the author's actual ChatGPT conversation is available in [ChatGPT's trace](agent-traces/chatgpt/01-mathematical-specification-review.md). The findings and resulting revisions are summarized in `DESIGN-LOG.md` Iterations 4–5 and commits `0d49eb4` and `2d3128c`.
+**Feedback or finding:** Unsupported weighting and underspecified objectives were not suitable for a locked, reproducible evaluation.
+**Human checkpoint / decision:** Implementation was held until the mathematical specification was reviewed and locked.
+**Resulting project change:** The final pre-implementation design used normalized targets, explicit caffeine semantics, exclusive liquid bases, and equal weighting for the defined antioxidant components.
+**Evidence location:** [ChatGPT's representative trace](agent-traces/chatgpt/01-mathematical-specification-review.md), `DESIGN-LOG.md`, `SPEC.md`, and commits `0d49eb4` and `2d3128c`. It is not a complete raw transcript.
 
 ## Trajectory 3 — Codex TASK 1 read-only review
 
-### Agent
-OpenAI Codex
-
-### Objective
-Inspect the repository and read the locked specification before coding.
-
-### Constraints
-- no source-code changes;
-- no dependency installation;
-- no evaluation;
-- no commits.
-
-### Agent contribution
-Codex reviewed the specification and proposed an optimizer approach.
-It identified two concrete specification issues:
-
-1. a stale Na reference in §7;
-2. an underspecified recipe-level antioxidant aggregation rule.
-
-Codex also identified implementation considerations around the nonlinear
-antioxidant objective.
-
-### Human checkpoint
-The findings were reviewed before further implementation.
-
-### Result
-The specification was revised before implementation continued.
-
----
+**Agent:** OpenAI Codex
+**Purpose:** Inspect the repository and locked specification before coding.
+**Instruction / task:** Perform a read-only implementation review without changes, dependency installation, evaluation, or commit.
+**Agent actions:** Codex proposed an optimizer approach and identified a stale Na reference in §7 and an underspecified recipe-level antioxidant aggregation rule, while noting the nonlinear objective's optimization difficulty.
+**Tool / execution evidence:** The repository records the findings in `DESIGN-LOG.md` Iteration 5 and the subsequent `SPEC.md` revision. The Codex evidence index contains curated observable tool excerpts; complete terminal history is not included.
+**Feedback or finding:** The specification needed correction before safe implementation.
+**Human checkpoint / decision:** The findings were reviewed before implementation continued.
+**Resulting project change:** The specification was revised and locked as v1.0-rev5 before implementation.
+**Evidence location:** `DESIGN-LOG.md`, `SPEC.md`, commit `2d3128c`, and the [Codex verifier-audit trace](agent-traces/codex/01-verifier-audit.md).
 
 ## Trajectory 4 — Codex TASK 2 implementation
 
-### Agent
-OpenAI Codex
-
-### Objective
-Implement the locked specification as a runnable project.
-
-### Constraints
-- SPEC.md locked;
-- frozen evaluation cases unchanged;
-- tests written alongside implementation;
-- deterministic implementation preferred;
-- no unnecessary external dependencies.
-
-### Agent contribution
-Codex implemented:
-
-- target generation;
-- nutrient calculations;
-- deterministic recipe optimization;
-- verification;
-- NNTD metrics;
-- baseline parser/interface;
-- CLI;
-- unit tests;
-- frozen evaluation harness.
-
-### Verification
-The initial implementation passed **20 tests** before the
-pre-evaluation implementation audit.
-
-### Human checkpoint
-The implementation was reviewed before being committed.
-
-### Git checkpoint
-`61a3b7a feat: implement Nordic Berry Optimizer`
-
----
+**Agent:** OpenAI Codex
+**Purpose:** Implement the locked specification as a runnable project.
+**Instruction / task:** Preserve frozen cases, use deterministic standard library code, write tests alongside implementation, and avoid unnecessary dependencies.
+**Agent actions:** Codex implemented target construction, nutrient handling, deterministic optimization, verification, NNTD, baseline parsing, CLI, and the frozen evaluation harness.
+**Tool / execution evidence:** The resulting `src/`, `tests/`, and commit `61a3b7a` are committed evidence. The [Codex verifier-audit trace](agent-traces/codex/01-verifier-audit.md) provides a curated observable session excerpt; the complete implementation session is not included. The implementation initially passed 20 tests before the audit.
+**Feedback or finding:** A runnable deterministic path existed, but it still needed a pre-evaluation audit.
+**Human checkpoint / decision:** The implementation was reviewed before the commit.
+**Resulting project change:** `61a3b7a feat: implement Nordic Berry Optimizer`.
+**Evidence location:** `src/`, `tests/`, commit `61a3b7a`, and the [Codex verifier-audit trace](agent-traces/codex/01-verifier-audit.md).
 
 ## Trajectory 5 — Pre-evaluation implementation audit
 
-### Agent
-OpenAI Codex
-
-### Objective
-Perform a read-only audit of TASK 2 against SPEC v1.0-rev5.
-
-### Constraints
-- no modifications;
-- no dependency installation;
-- no frozen evaluation;
-- no evaluation artifacts;
-- no commit.
-
-### Agent findings
-The audit identified:
-
-- non-finite input validation weakness;
-- insufficient verifier accounting independence;
-- baseline liquid-base preservation weakness;
-- missing concrete baseline LLM configuration.
-
-The audit also noted the known limitation that the deterministic
-coordinate-pattern optimizer does not provide a formal proof of global
-optimality for the nonlinear antioxidant objective.
-
-### Human checkpoint
-The audit findings were reviewed before corrective changes were
-authorized.
-
----
+**Agent:** OpenAI Codex
+**Purpose:** Audit TASK 2 against SPEC v1.0-rev5 without changing or running the evaluation.
+**Instruction / task:** Perform a read-only compliance and implementation review.
+**Agent actions:** The audit found weaknesses in finite numeric validation, verifier accounting independence, baseline liquid-base preservation, and concrete baseline configuration. It also recorded the lack of a formal global optimum guarantee for the deterministic coordinate search.
+**Tool / execution evidence:** Findings are summarized in the committed design history and represented by the [Codex verifier-audit trace](agent-traces/codex/01-verifier-audit.md); complete raw tool history is not included.
+**Feedback or finding:** Corrective work was needed before live evaluation.
+**Human checkpoint / decision:** Changes were authorized only after review.
+**Resulting project change:** A bounded corrective pass was prepared without changing the locked mathematical intent.
+**Evidence location:** `DESIGN-LOG.md`, commit history, and the [Codex verifier-audit trace](agent-traces/codex/01-verifier-audit.md).
 
 ## Trajectory 6 — TASK 2.1 corrective pass
 
-### Agent
-OpenAI Codex
+**Agent:** OpenAI Codex
+**Purpose:** Correct the audited implementation issues before evaluation.
+**Instruction / task:** Add finite-input validation, independent nutrient recalculation, faithful liquid-base handling, malformed-baseline reporting, and offline coverage without changing frozen semantics.
+**Agent actions:** Codex made the corrective implementation and added tests; the corrected implementation passed 26 tests.
+**Tool / execution evidence:** `src/`, `tests/`, `DESIGN-LOG.md`, and commit `ae0bbd4` are the available evidence. The [Codex verifier-audit trace](agent-traces/codex/01-verifier-audit.md) provides a curated observable excerpt. No network or frozen evaluation was run in this phase.
+**Feedback or finding:** The baseline interface and verifier needed clearer failure categories and independent accounting.
+**Human checkpoint / decision:** The corrective changes were reviewed before commit.
+**Resulting project change:** `ae0bbd4 fix: harden verification and baseline evaluation`.
 
-### Objective
-Correct the implementation issues identified by the audit without
-changing the locked mathematical specification.
+## Trajectory 7 — Baseline protocol and documentation checkpoints
 
-### Corrections
-The implementation was updated to:
+**Agents:** OpenAI Codex, with Claude/ChatGPT design material
+**Purpose:** Make the baseline identifiable, input-equivalent, and suitable for pre-evaluation use.
+**Instruction / task:** Audit the baseline, document the Rule Book history, and correct only pre-evaluation protocol defects.
+**Agent actions:** Codex added the OpenRouter adapter and tests; the audit found the missing baseline `liquid_base` input and produced rev6. Free-endpoint 429 responses, the paid 512-token empty-content smoke, and public reasoning metadata then led to rev7: paid `z-ai/glm-5.2`, `max_tokens=2048`, default reasoning. A final non-frozen smoke returned HTTP 200 with text but was `INVALID` under the committed parser, with no repair or retry.
+**Tool / execution evidence:** Commits `4d06e7e`, `53a3cd4`, `aa02fe2`, and `300b60d`; `src/openrouter_baseline.py` and tests show the adapter shape. The [Codex verifier-audit trace](agent-traces/codex/01-verifier-audit.md) contains a curated baseline checkpoint excerpt; complete CLI/API traces and approval history are not included.
+**Feedback or finding:** Input parity and paid-endpoint reliability had to be settled before frozen evaluation, without using frozen results to tune the protocol.
+**Human checkpoint / decision:** The human approved rev6 and rev7 before evaluation.
+**Resulting project change:** The locked baseline became a single user message to paid GLM 5.2 with fixed settings and no tools or context.
 
-- reject non-finite numeric inputs;
-- independently recompute nutrient values in the verifier;
-- preserve and validate baseline liquid-base selection;
-- explicitly classify malformed or ambiguous baseline output;
-- retain a provider-agnostic baseline LLM interface;
-- add tests covering the corrected behavior;
-- improve Rule Book-oriented documentation.
+## Trajectory 8 — TASK 4.0A/4.1 recovery
 
-### Verification
-The corrected implementation passed **26 tests**.
+**Agent:** OpenAI Codex
+**Purpose:** Diagnose and harden an incomplete first frozen orchestration.
+**Instruction / task:** Perform a read-only forensic audit, then preserve the failed run and add crash-safe per-case persistence and failure isolation.
+**Agent actions:** The first run reached 9 provider-side requests; cases 1–8 returned text, case 9 had empty assistant content, and cases 10–14 were not attempted. Codex encountered ambiguous tool output, did not fabricate results or blindly retry, requested investigation, preserved the partial artifacts, and added rev8 checkpoint/failure-isolation behavior.
+**Tool / execution evidence:** The incident archive `incidents/2026-08-29-partial-run-9-of-14/`, `SPEC.md` rev8, source/tests, and commit `94f97a4` provide the committed evidence. The [Codex frozen-run recovery trace](agent-traces/codex/02-frozen-run-recovery.md) provides a curated observable excerpt; the complete process/tool trace is not included.
+**Feedback or finding:** A normal per-case `CALL_FAILED` must consume one attempt, persist safely, and allow the next case; only ambiguous runner or checkpoint failures stop the run.
+**Human checkpoint / decision:** Run #1 was preserved as historical evidence; rev8 was reviewed and committed before run #2.
+**Resulting project change:** Atomic per-case persistence and one-attempt failure isolation, with no retry, repair, fallback, or substitution.
+**Evidence location:** [Codex frozen-run recovery trace](agent-traces/codex/02-frozen-run-recovery.md), `src/evaluation_runner.py`, `SPEC.md` rev8, and commit `94f97a4`.
 
-The frozen evaluation was not run during this phase.
+## Trajectory 9 — Official frozen evaluation and audits
 
-### Human checkpoint
-The corrective changes were reviewed and committed.
+**Agent:** OpenAI Codex
+**Purpose:** Execute the locked run #2 and audit its recorded outcomes without post-hoc tuning.
+**Instruction / task:** Run all 14 cases under rev8, preserve artifacts, then perform read-only attribution audits.
+**Agent actions:** Run #2 completed 14/14 with one baseline attempt each. Codex later audited agent boundary outcomes, Boost-off guarana, and raw baseline/parser attribution while leaving artifacts unchanged. It documented that case 11/12 matched pre-declared expectations, that four raw baseline recipes were mass-balanced but misrepresented by the parser, and that case 14 was an empty-response `CALL_FAILED`.
+**Tool / execution evidence:** Committed artifacts under `evaluation/`, the incident archive, `DESIGN-LOG.md`, and commits `eac8463` and `9d5fda3` are available evidence. The [Codex frozen-run recovery trace](agent-traces/codex/02-frozen-run-recovery.md) provides a curated related session excerpt; no complete tool-channel history is included.
+**Feedback or finding:** Interpretation must distinguish raw model output, parser/verifier outcomes, and the single paired NNTD comparison.
+**Human checkpoint / decision:** The official artifacts were committed unchanged before documentation of the findings.
+**Resulting project change:** A locked evidence set and qualified narrative, not a protocol change after observing results.
 
-### Git checkpoint
-`ae0bbd4 fix: harden verification and baseline evaluation`
+## Trajectory 10 — Reproduction guide and standalone demo
 
----
+**Agent:** OpenAI Codex
+**Purpose:** Make the local agent path and browser demonstration reproducible for reviewers.
+**Instruction / task:** Audit clean-environment reproduction, clarify README requirements, and build an offline standalone demo without changing the frozen methodology.
+**Agent actions:** The local agent path was verified in a fresh Python 3.11.2 environment with no packages, network, or API key; it produced verifier PASS and NNTD. Codex then added `demo.html` with inline logic/artwork, performed four non-frozen parity checks, added the Pages root redirect, and linked the public demo.
+**Tool / execution evidence:** `README.md`, `demo.html`, `index.html`, tests, and commits `527d8e7`, `3a2cfe1`, `d1efa8b`, and `cbe85ab` are committed evidence. The [Codex reproducibility/final-audit trace](agent-traces/codex/03-reproducibility-final-audit.md) provides a curated observable excerpt; complete build/tool history is not included.
+**Feedback or finding:** The agent-only path is local and cost-free; the paid baseline is a separate OpenRouter path.
+**Human checkpoint / decision:** README/demo documentation and commits were reviewed before publication.
+**Resulting project change:** An offline-capable interactive demo and a clean-environment reproduction guide.
 
-## Trajectory 7 — Pre-evaluation documentation and Rule Book alignment
+## Human checkpoints
 
-### Agents
-Claude, ChatGPT, and OpenAI Codex
+The committed history supports approval gates between major phases:
 
-### Objective
-Improve the project's documentation and development trace before
-running the frozen evaluation.
+1. initial product direction and design review;
+2. specification revisions and v1.0-rev5 lock;
+3. Codex read-only review;
+4. implementation and corrective-pass review;
+5. baseline rev6/rev7 protocol corrections;
+6. rev8 recovery protocol before run #2;
+7. official results and documentation/demo review.
 
-### Focus
-The documentation process was aligned with the hackathon requirements,
-including:
+The curated trace files include selected human instructions and checkpoints,
+but not the complete approval history. This remains summarized chronology
+rather than a raw human-agent transcript.
 
-- Improvement Changelog;
-- reproducibility;
-- baseline methodology;
-- safety/responsible use;
-- failure modes;
-- engineering insights;
-- agent trajectories;
-- human checkpoints.
+## Evidence limitations
 
-### Important principle
-The project distinguishes between:
+- The linked files are curated representative excerpts, not complete private
+  session histories.
+- Complete approval messages, intermediate tool events, hidden reasoning, and
+  unrelated conversation material are intentionally omitted.
+- Exact runtime, timestamps, provider routing details, and cost for historical
+  agent interactions are available only where the committed evidence records
+  them.
 
-- design history;
-- implementation history;
-- agent trajectories;
-- evaluation evidence.
-
-Evaluation results must not be fabricated or added before the actual
-frozen evaluation is run.
-
-### Current status
-This section will be expanded with the final documentation work and
-evaluation evidence.
-
----
-
-## Human-in-the-loop checkpoints
-
-The development process deliberately used human approval gates between
-major agent phases.
-
-Current checkpoints include:
-
-1. approval of the initial product direction;
-2. approval of specification revisions;
-3. approval after Codex's read-only TASK 1 review;
-4. approval of TASK 2 implementation;
-5. review of the implementation audit;
-6. approval of TASK 2.1 corrections;
-7. approval before frozen evaluation.
-
-Agents were not authorized to silently modify the locked specification
-or the frozen evaluation methodology.
-
----
-
-## Agent usage principles
-
-Agents were used primarily for:
-
-- independent design review;
-- mathematical review;
-- specification challenge;
-- implementation;
-- testing;
-- verification;
-- documentation.
-
-Human decisions remained responsible for:
-
-- project scope;
-- mathematical specification changes;
-- evaluation methodology;
-- approval of implementation stages;
-- approval of the frozen evaluation;
-- final submission decisions.
-
----
-
-## Evidence and trajectory completeness
-
-The final submission should preserve representative evidence for each
-agent used.
-
-For each trajectory, the final version should include or link to
-available evidence of:
-
-- the instruction/prompt given to the agent;
-- relevant agent output;
-- tool actions where applicable;
-- feedback and corrections;
-- retries or failed approaches where applicable;
-- human approval/checkpoint;
-- resulting project change.
-
-Missing information must be marked as unavailable rather than
-reconstructed as fact.
-
----
-
-## Evaluation phase — placeholder
-
-### TASK 3
-Frozen evaluation has not yet been run.
-
-This section will be populated only after the frozen evaluation is
-authorized and executed.
-
-Planned evidence:
-
-- baseline model/provider configuration;
-- frozen evaluation command;
-- baseline results;
-- agent results;
-- comparison metrics;
-- safety/verification metrics;
-- runtime;
-- cost;
-- reproducibility information.
-
-No evaluation result should be entered here before it has actually
-been observed.
-
-### TASK 3 preparation — baseline adapter checkpoint
-
-Human direction selected OpenRouter as the API gateway and GLM 5.2 Free as the
-official named baseline model. The implementation agent verified the exact
-fixed ID (`z-ai/glm-5.2:free`) from OpenRouter material, then added a
-standard-library OpenAI-compatible adapter. It reads `OPENROUTER_API_KEY` only
-from the environment, sends the frozen prompt as the sole user message, and
-does not request tools, web search, file access, or project context. A fixed
-ID was chosen over `openrouter/free` to keep the evaluated model identifiable
-instead of allowing a changing free-model router. Mocked HTTP tests exercised
-the adapter without credentials. Frozen evaluation remains unrun at this
-checkpoint.
-
-### Trajectory 7 — TASK 3.0 pre-evaluation input-parity correction
-
-The pre-evaluation smoke/preflight audit compared the agent and baseline case
-inputs. It found that the agent received and used `liquid_base`, but the
-single-LLM baseline prompt did not communicate it. The baseline prompt was
-updated and SPEC v1.0-rev6 records the correction before any frozen
-evaluation was run and before any frozen evaluation result was observed.
-
-The v1 contract remains exclusive: the selected liquid base is either
-`water` or `mineral_water`. Mixing those liquids, or introducing more general
-compositions such as milk, coffee, or mixtures, is future work and is not
-part of v1 or the frozen evaluation. The 14 frozen cases were left unchanged.
-
-### Trajectory 8 — TASK 3.7 paid baseline protocol lock
-
-Pre-evaluation smoke testing repeatedly received upstream HTTP 429 responses
-from the free `z-ai/glm-5.2:free` endpoint. A paid `z-ai/glm-5.2` connectivity
-smoke returned HTTP 200, but the first paid request with `max_tokens=512`
-returned `message.content=null`. Public model metadata showed reasoning enabled
-by default, default effort `high`, supported efforts `high` and `xhigh`, and no
-advertised `none` effort.
-
-Before any frozen evaluation or frozen result, the protocol was corrected in
-rev7 to use paid `z-ai/glm-5.2` with `max_tokens=2048` and default reasoning
-behavior. This was a reliability and reproducibility correction, not an
-evaluation-performance change. The 14 frozen cases, prompts, objectives,
-verifier, optimizer, NNTD, nutrient data, constraints, and evaluation
-semantics remain unchanged.
-
-### Trajectory 9 — TASK 3.8 final paid baseline smoke
-
-After rev7 was committed, exactly one deliberately non-frozen case was run:
-Data Expert 37, Genius 61, Fit 22, Cute 14, Power Mode off, Stimulant Boost
-off, liquid base water. The committed OpenRouter configuration used paid
-`z-ai/glm-5.2`, `temperature=0`, `top_p=1`, `max_tokens=2048`, `stream=false`,
-and default reasoning. It returned HTTP 200 with non-empty assistant text,
-confirming paid endpoint and transport/model-response connectivity.
-
-The committed parser classified the response `INVALID` because parenthesized
-ingredient labels were not recognized, so NNTD was not scorable. The raw
-response also specified both 100 g water and 100 g mineral water despite
-`Liquid base: water.`, violating the exclusive v1 liquid-base contract. No
-retry, repair, manual reinterpretation, parser adaptation, or protocol change
-was made after the output. No frozen case or result was observed; malformed or
-contract-violating baseline output remains preserved and rejected.
-
-### Trajectory 10 — TASK 4.0A/4.1 failed-run recovery
-
-The first frozen orchestration reached 9 provider-side requests and stopped
-before cases 10–14. Cases 1–8 returned text; case 9 produced empty assistant
-content and was recorded `CALL_FAILED`. Codex initially encountered ambiguous
-tool output and an apparent absence of artifacts, did not fabricate results or
-blindly retry, and requested a read-only forensic investigation. The partial
-artifacts later appeared; they were preserved unchanged under the incident
-archive.
-
-The audit established that the runner held results in memory and wrote all
-artifacts only after leaving its loop. Rev8 therefore adds per-case atomic
-checkpointing and changes ordinary baseline failure handling from whole-run
-fail-fast to failure isolation. Each case still receives exactly one attempt;
-`CALL_FAILED` remains distinct from parser `INVALID` and continues to the next
-case without retry. This is a persistence/completeness correction, not a
-change to prompts, model, settings, routing, parser, verifier, optimizer,
-NNTD, scoring, or frozen cases. OpenRouter automatic backend routing remains a
-reproducibility limitation, and backend pinning was not introduced after the
-failed run. Two requests reached the 2048-token ceiling; `max_tokens` was not
-changed.
-
----
-
-## Final submission update — placeholder
-
-### TASK 4.2–4.5 — Frozen evaluation and read-only result audits
-
-The official rev8 run completed 14/14 cases with one baseline attempt per
-case. The results were committed as `eac8463 eval: lock official frozen run 2
-results`. Later audits were kept strictly separate from the locked data: Codex
-did not rerun optimization, parsing, verification, inference, or evaluation,
-and did not modify any artifact.
-
-The first post-run audit traced the agent's non-PASS cases to the locked
-boundary rules: cases 11 and 13 are Cute/Stimulant hard rejects, while case 12
-is the explicitly allowed mineral-water warning. A subsequent guarana audit
-found that Boost-off guarana is legal in the locked search space and can alter
-liquid allocation; the case-6 observation was classified as
-SEARCH_ARTIFACT_WITHIN_SPEC rather than treated as a defect.
-
-The baseline audit then compared raw responses with their committed parsed
-records. In cases 1, 2, 9, and 10, raw quantities visibly totaled 250 g, but
-the narrow parser omitted berry quantities and double-counted repeated water
-mentions in cases 1 and 9. Other baseline failures involved liquid-base
-parsing, and case 14 had empty assistant content and was recorded CALL_FAILED.
-Codex preserved the distinction between raw model output and the structured
-pipeline outcome, did not repair or reinterpret responses, and did not change
-the parser or frozen methodology.
-
-This trajectory documents interpretation after the run, not a feedback loop
-into the evaluation. Frozen cases, prompts, artifacts, and scoring remain the
-authoritative evidence.
+The excerpts are intended to satisfy the trajectory evidence requirement
+without dumping complete private session histories. They should be submitted
+alongside the repository as the selected representative evidence.
